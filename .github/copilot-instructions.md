@@ -5,6 +5,7 @@
 - You must consult `DECISIONS.md` before proposing or making any architectural or strategic changes.
 - Do not suggest changes that contradict `DECISIONS.md` unless explicitly instructed by a human contributor.
 - `DECISIONS.md` is the authoritative record of architectural decisions and must be treated as such.
+- Do not make changes to `PAPER.md` without explicit user consent.
 
 ## Knowledge Sharing and Documentation
 
