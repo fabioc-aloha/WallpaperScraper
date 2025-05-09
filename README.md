@@ -96,6 +96,54 @@ python -m pytest tests/test_wallpaperbat_service.py
 
 Decisions and architectural rationale are documented in `DECISIONS.md`.
 
+## Project Evolution
+
+This project has evolved through careful consideration of various challenges and solutions. We maintain two key documents that not only track our journey but also help GitHub Copilot provide better assistance:
+
+1. `DECISIONS.md` - Contains architectural decisions that require explicit user approval to change. This helps GitHub Copilot understand and respect the project's core design principles.
+
+2. `LEARNINGS.md` - Automatically updated by GitHub Copilot as it helps solve problems, documenting successful approaches and preventing repetition of unsuccessful strategies.
+
+### Design Decisions (`DECISIONS.md`)
+
+Key architectural decisions include:
+- Multi-service architecture for resilience against site changes
+- Sophisticated resolution matching system with quality levels
+- Parallel processing with intelligent retry mechanisms
+- Centralized configuration for easy customization
+
+See [`DECISIONS.md`](DECISIONS.md) for detailed rationales behind these and other architectural choices.
+
+### Project Learnings (`LEARNINGS.md`)
+
+Notable learnings from development include:
+- Website scraping challenges and solutions
+- Service-specific adaptations
+- Performance optimization techniques
+- Error handling strategies
+- Testing approaches
+
+Our [`LEARNINGS.md`](LEARNINGS.md) document captures these experiences in detail, helping future contributors understand:
+- What worked well
+- What didn't work
+- How we solved specific challenges
+- Ongoing improvements
+
+### Integration with GitHub Copilot
+
+These documents serve a dual purpose:
+
+1. **Human Documentation**: They provide valuable context for users and contributors about the project's evolution and rationale.
+
+2. **AI Assistance**: They help GitHub Copilot:
+   - Understand and respect architectural boundaries
+   - Learn from past solutions and challenges
+   - Make informed suggestions aligned with project principles
+   - Avoid repeating approaches that didn't work
+   - Document new solutions as they're implemented
+
+`DECISIONS.md` acts as a guardrail, requiring explicit user approval for architectural changes, while `LEARNINGS.md` serves as GitHub Copilot's dynamic knowledge base, continuously updated as it assists with problem-solving.
+
 ## License
 
 MIT License — see `LICENSE` for details.
