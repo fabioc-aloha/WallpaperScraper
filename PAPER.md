@@ -19,6 +19,19 @@ Recent advances in machine learning have led to the emergence of AI-driven code 
 
 Although AI coding assistants accelerate routine tasks, they can introduce inconsistencies when suggestions deviate from established project patterns. Without explicit guardrails, developers may inadvertently accept suboptimal or misaligned code snippets, leading to fragmented architectures and increased technical debt. Additionally, teams lack systematic mechanisms to capture why certain AI-generated solutions succeeded or failed, resulting in repeated mistakes and lost institutional memory. Finally, unclear role definitions foster over-reliance on either human intuition or AI automation, undermining collaborative efficiencies. Thus, a structured framework is required to balance human strategic vision with automated implementation support.
 
+### Illustration: Real-World Developer Complaints
+
+Recent discussions in the developer community highlight several recurring pain points with AI coding assistants such as GitHub Copilot:
+
+- **Architectural drift:** AI-generated code often ignores project-specific architecture or coding standards, resulting in inconsistent or unmaintainable code (Reddit, 2023a).
+- **Repeated mistakes:** Copilot can repeat past errors, suggest insecure or deprecated patterns, or hallucinate APIs, especially without project context (Reddit, 2023a; Hacker News, 2022).
+- **Subtle bugs and security risks:** AI may introduce bugs or vulnerabilities because it lacks full understanding of project intent and constraints (Reddit, 2023a).
+- **Loss of institutional knowledge:** Lessons learned and fixes are not captured, so the same mistakes are repeated and onboarding new contributors becomes harder (Reddit, 2023a).
+- **Overwhelming suggestions:** AI can flood the editor with irrelevant or low-quality code, making it harder to focus or find the right solution (Reddit, 2023a).
+- **Lack of documentation and rationale:** AI-generated code often lacks comments or explanations, making it difficult to review or maintain (Reddit, 2023a).
+
+These issues are echoed in online forums, where developers express frustration with the lack of project awareness, context, and knowledge retention in current AI coding tools (Reddit, 2023a, 2023b; Hacker News, 2022).
+
 ## Literature Review
 
 The intersection of human expertise and AI assistance in software development has been the subject of increasing scholarly attention. Ziegler et al. (2023) demonstrated that AI coding assistants can significantly improve developer productivity, but also noted the risk of introducing architectural inconsistencies if not properly governed. Denny et al. (2023) explored the impact of AI on student learning outcomes, highlighting the importance of maintaining human oversight to ensure code quality and learning efficacy. Nygard (2011) and Henderson (2023) established the value of architecture decision records (ADRs) for preserving design rationale and guiding future development, while Martraire (2019) and IEEE Software (2002) emphasized the importance of living documentation and knowledge management in evolving software projects. Microsoft Research (2023) and Milton (2019) further explored the collaborative potential of AI pair programming and the role of social knowledge sharing in technical teams.
@@ -296,6 +309,10 @@ Finnie-Ansley, J., Denny, P., Becker, B. A., Luxton-Reilly, A., & Prather, J. (2
 
 GitHub. (2023). GitHub Copilot documentation. GitHub Docs. https://docs.github.com/en/copilot
 
+GitHub Copilot. (2025). AI Assistant's perspective on the Two-Document Framework. In WallpaperScraper Project Documentation.
+
+Hacker News. (2022, July 6). Discussion on AI code assistants [Online forum post]. https://news.ycombinator.com/item?id=31996413
+
 Henderson, J. P. (2023). Architecture decision record templates and examples. GitHub Repository. https://github.com/joelparkerhenderson/architecture-decision-record/
 
 IEEE Software. (2002). Special issue on knowledge management in software engineering. *IEEE Software*, 19(3), 26-38. https://ieeexplore.ieee.org/document/926659
@@ -310,6 +327,10 @@ Milton, N. (2019). The knowledge management handbook: Collaboration and social n
 
 Nygard, M. (2011). Documenting architecture decisions. *Cognitect Blog*. https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 
+Reddit. (2023a, February 17). What are your biggest gripes with GitHub Copilot? [Online forum post]. Reddit. https://www.reddit.com/r/programming/comments/10w7k8g/what_are_your_biggest_gripes_with_github_copilot/
+
+Reddit. (2023b, April 12). What are your biggest gripes with GitHub Copilot? [Online forum post]. Reddit. https://www.reddit.com/r/ExperiencedDevs/comments/12w7k8g/what_are_your_biggest_gripes_with_github_copilot/
+
 Tools for Architecture Decision Records. (2023). ADR Tools documentation. https://adr.github.io/
 
 Vaithilingam, P., Jain, A., & Saini, R. (2022). Expectations vs. Experience: Evaluating the Usability of Code Generation Tools Powered by Large Language Models. *arXiv preprint arXiv:2210.03629*. https://arxiv.org/abs/2210.03629
@@ -317,5 +338,3 @@ Vaithilingam, P., Jain, A., & Saini, R. (2022). Expectations vs. Experience: Eva
 WallpaperScraper Project. (2025). GitHub Repository. https://github.com/fabioc-aloha/WallpaperScraper
 
 Ziegler, D., Kalliamvakou, E., Simister, S., Sittampalam, G., Tung, A., & Zeller, A. (2023). The impact of AI on developer productivity: Evidence from GitHub Copilot. *arXiv preprint arXiv:2302.06590*. https://arxiv.org/abs/2302.06590
-
-GitHub Copilot. (2025). AI Assistant's perspective on the Two-Document Framework. In WallpaperScraper Project Documentation.

@@ -5,14 +5,17 @@
 ## Problem Statement
 
 - AI coding assistants (like GitHub Copilot) can generate code at unprecedented speed, but this can lead to:
-  - Architectural drift: code diverges from intended design
-  - Loss of institutional knowledge: lessons learned are not captured
-  - Repeated mistakes: failed approaches are tried again
+  - Architectural drift: AI-generated code often ignores project-specific architecture or coding standards, resulting in inconsistent or unmaintainable code.
+  - Repeated mistakes: Copilot can repeat past errors, suggest insecure or deprecated patterns, or hallucinate APIs, especially without project context.
+  - Subtle bugs and security risks: AI may introduce bugs or vulnerabilities because it lacks full understanding of project intent and constraints.
+  - Loss of institutional knowledge: Lessons learned and fixes are not captured, so the same mistakes are repeated and onboarding new contributors becomes harder.
+  - Overwhelming suggestions: AI can flood the editor with irrelevant or low-quality code, making it harder to focus or find the right solution.
+  - Lack of documentation and rationale: AI-generated code often lacks comments or explanations, making it difficult to review or maintain.
 - Teams need a way to harness AI productivity while maintaining design coherence, code quality, and a culture of continuous learning.
 
 <!-- Speaker Notes -->
 *Speaker notes:*
-AI tools are powerful, but without structure, they can introduce chaos into a codebase. This slide sets up the core challenge: how do we get the productivity benefits of AI without losing control over our architecture and knowledge? We'll see how the two-document framework addresses these risks and supports sustainable, high-quality development.
+AI tools are powerful, but without structure, they can introduce chaos into a codebase. These complaints from the developer community highlight the real risks: inconsistent code, repeated mistakes, subtle bugs, and lost knowledge. This slide sets up the core challenge: how do we get the productivity benefits of AI without losing control over our architecture and knowledge? We'll see how the two-document framework addresses these risks and supports sustainable, high-quality development.
 
 ---
 
@@ -93,25 +96,25 @@ This slide provides a step-by-step guide for teams looking to adopt the framewor
 
 - Create a file at `.github/copilot-instructions.md` in your repository.
 - Example content:
-  ```markdown
-  # GitHub Copilot Instructions for This Repository
+```markdown
+# GitHub Copilot Instructions for This Repository
 
-  ## Architectural and Strategic Guidelines
+## Architectural and Strategic Guidelines
 
-  - You must consult `DECISIONS.md` before proposing or making any architectural or strategic changes.
-  - Do not suggest changes that contradict `DECISIONS.md` unless explicitly instructed by a human contributor.
-  - `DECISIONS.md` is the authoritative record of architectural decisions and must be treated as such.
+- You must consult `DECISIONS.md` before proposing or making any architectural or strategic changes.
+- Do not suggest changes that contradict `DECISIONS.md` unless explicitly instructed by a human contributor.
+- `DECISIONS.md` is the authoritative record of architectural decisions and must be treated as such.
 
-  ## Knowledge Sharing and Documentation
+## Knowledge Sharing and Documentation
 
-  - All significant implementation learnings, optimizations, and failures must be documented in `LEARNINGS.md`.
-  - Use `LEARNINGS.md` as a reference to inform suggestions, avoid previously encountered issues, and build upon existing solutions.
+- All significant implementation learnings, optimizations, and failures must be documented in `LEARNINGS.md`.
+- Use `LEARNINGS.md` as a reference to inform suggestions, avoid previously encountered issues, and build upon existing solutions.
 
-  ## Azure Development Standards
+## Azure Development Standards
 
-  - This project adheres to Microsoft Azure best practices.
-  - When generating Azure-related code, terminal commands, or operational procedures, consult the `azure_development-get_best_practices` tool if available.
-  ```
+- This project adheres to Microsoft Azure best practices.
+- When generating Azure-related code, terminal commands, or operational procedures, consult the `azure_development-get_best_practices` tool if available.
+```
 
 <!-- Speaker Notes -->
 *Speaker notes:*
@@ -123,21 +126,21 @@ The `.github/copilot-instructions.md` file is where you set the ground rules for
 
 - Add a `.vscode/settings.json` file to your repository for workspace-level configuration.
 - Example content:
-  ```json
-  {
-    "github.copilot.chat.codeGeneration.instructions": [
-      {
-        "text": "- Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_best_practices` tool if available."
-      },
-      {
-        "text": "- You must always consult `DECISIONS.md` before suggesting or making architectural or strategic changes. Never propose changes that contradict it without explicit human approval."
-      },
-      {
-        "text": "- You must record all significant implementation learnings, optimizations, and failures in `LEARNINGS.md`. Use this file to avoid repeating past mistakes and to build on prior solutions."
-      }
-    ]
-  }
-  ```
+```json
+{
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "text": "- Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_best_practices` tool if available."
+    },
+    {
+      "text": "- You must always consult `DECISIONS.md` before suggesting or making architectural or strategic changes. Never propose changes that contradict it without explicit human approval."
+    },
+    {
+      "text": "- You must record all significant implementation learnings, optimizations, and failures in `LEARNINGS.md`. Use this file to avoid repeating past mistakes and to build on prior solutions."
+    }
+  ]
+}
+```
 
 <!-- Speaker Notes -->
 *Speaker notes:*
@@ -237,6 +240,10 @@ The two-document framework is more than a process—it's a foundation for sustai
   ]
 }
 ```
+
+<!-- Speaker Notes -->
+*Speaker notes:*
+These sample files provide concrete starting points for your own project. The Copilot instructions file is written in natural language and sets team-wide expectations, while the VS Code settings file enables rule-based automation and tool invocation for individual users or the whole workspace.
 
 ---
 
