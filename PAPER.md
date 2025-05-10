@@ -239,6 +239,14 @@ GitHub Copilot supports two distinct but complementary mechanisms for customizin
 
 If needed, scripts can be created to generate or validate the presence of these files across multiple repositories.
 
+## Enforcing User Consent for Research Paper Changes
+
+During the course of this project, the importance of maintaining authorial control over the research paper (`PAPER.md`) became evident. At one point, the Development Lead (human user) simply requested that no changes be made to `PAPER.md` without explicit approval. In response, the AI assistant (GitHub Copilot) automatically updated the repository’s `.github/copilot-instructions.md` file to include the following directive:
+
+- Do not make changes to `PAPER.md` without explicit user consent.
+
+This automation demonstrates the practical value of the two-document approach and the repository-level Copilot configuration. By encoding this rule directly into the project’s Copilot instructions, the system ensures that all contributors and AI assistants are consistently reminded of the requirement for explicit user consent before modifying the research paper. This not only preserves the integrity of the academic work but also exemplifies how human oversight and AI automation can work together to enforce project governance in real time.
+
 ## Discussion
 
 ### Benefits Assessment
