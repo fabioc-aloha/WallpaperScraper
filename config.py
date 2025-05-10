@@ -12,7 +12,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 CONFIG = {    # Wallpaper Settings
     'RESOLUTION': '5120x1440',                     # Desired wallpaper resolution (width x height)
-    'THEMES': ['Abstract', 'digital'],              # Themes for wallpaper search
+    'THEMES': ['microsoft', 'ai', 'artificial intelligence'],              # Themes for wallpaper search
     'SITES': ['wallpaperswide.com', 'wallhaven.cc', 'wallpaperbat.com'], # Wallpaper sites to fetch from
     # Deprecated sites: '4kwallpapers.com' - no longer working with our implementation
 
