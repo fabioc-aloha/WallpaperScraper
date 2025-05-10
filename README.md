@@ -162,4 +162,6 @@ These documents serve a dual purpose:
 
 ## License
 
-MIT License — see `LICENSE` for details.
+The code in this repository is licensed under the MIT License (see `LICENSE`).
+
+The research paper (`PAPER.md`) is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (see `LICENSE-PAPER.md`).

@@ -1,3 +1,10 @@
+<!--
+Copyright (c) 2025 Fabio C.
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License (CC BY-NC-ND 4.0).
+See LICENSE-PAPER.md for details.
+--> 
+
 # AI-Assisted Development: A Human-Led Approach (Draft Version)
 
 ## Abstract
