@@ -1,0 +1,34 @@
+{
+    // Always open DECISIONS.md and LEARNINGS.md on workspace start
+    "workbench.startupEditor": "none",
+    "workbench.editor.pinnedTabs": true,
+    "workbench.editor.restoreViewState": true,
+    "files.autoSave": "onFocusChange",
+    "workbench.editorAssociations": {
+        "*.md": "default"
+    },
+    "workbench.editor.openSideBySideDirection": "right",
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "workbench.editor.revealIfOpen": true,
+    "workbench.files.action.showActiveFileInExplorer": true,
+    "workbench.files.action.alwaysRevealActiveFile": true,
+    "workbench.files.action.openEditors.visible": 2,
+    "workbench.files.action.openEditors.pinned": [
+        "DECISIONS.md",
+        "LEARNINGS.md"
+    ],
+    // Copilot Chat code generation instructions
+    "github.copilot.chat.codeGeneration.instructions": [
+        {
+            "when": "*",
+            "instructions": [
+                "Always consult DECISIONS.md before proposing or making any architectural or strategic changes.",
+                "Do not suggest changes that contradict DECISIONS.md unless explicitly instructed by a human contributor.",
+                "Do not make changes to PAPER.md without explicit user consent.",
+                "All significant implementation learnings, optimizations, and failures must be documented in LEARNINGS.md.",
+                "Use LEARNINGS.md as a reference to inform suggestions, avoid previously encountered issues, and build upon existing solutions."
+            ]
+        }
+    ]
+}
