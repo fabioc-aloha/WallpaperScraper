@@ -21,7 +21,7 @@
     // Copilot Chat code generation instructions
     "github.copilot.chat.codeGeneration.instructions": [
         {
-            "when": "*",
+            "file": "*",
             "instructions": [
                 "Always consult DECISIONS.md before proposing or making any architectural or strategic changes.",
                 "Do not suggest changes that contradict DECISIONS.md unless explicitly instructed by a human contributor.",
