@@ -95,9 +95,23 @@ This slide provides a step-by-step guide for teams looking to adopt the framewor
 - Example content:
   ```markdown
   # GitHub Copilot Instructions for This Repository
-  ...existing code...
+
+  ## Architectural and Strategic Guidelines
+
+  - You must consult `DECISIONS.md` before proposing or making any architectural or strategic changes.
+  - Do not suggest changes that contradict `DECISIONS.md` unless explicitly instructed by a human contributor.
+  - `DECISIONS.md` is the authoritative record of architectural decisions and must be treated as such.
+
+  ## Knowledge Sharing and Documentation
+
+  - All significant implementation learnings, optimizations, and failures must be documented in `LEARNINGS.md`.
+  - Use `LEARNINGS.md` as a reference to inform suggestions, avoid previously encountered issues, and build upon existing solutions.
+
+  ## Azure Development Standards
+
+  - This project adheres to Microsoft Azure best practices.
+  - When generating Azure-related code, terminal commands, or operational procedures, consult the `azure_development-get_best_practices` tool if available.
   ```
-- This file guides Copilot to respect your project's boundaries and knowledge base.
 
 <!-- Speaker Notes -->
 *Speaker notes:*
@@ -110,9 +124,20 @@ The `.github/copilot-instructions.md` file is where you set the ground rules for
 - Add a `.vscode/settings.json` file to your repository for workspace-level configuration.
 - Example content:
   ```json
-  ...existing code...
+  {
+    "github.copilot.chat.codeGeneration.instructions": [
+      {
+        "text": "- Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_best_practices` tool if available."
+      },
+      {
+        "text": "- You must always consult `DECISIONS.md` before suggesting or making architectural or strategic changes. Never propose changes that contradict it without explicit human approval."
+      },
+      {
+        "text": "- You must record all significant implementation learnings, optimizations, and failures in `LEARNINGS.md`. Use this file to avoid repeating past mistakes and to build on prior solutions."
+      }
+    ]
+  }
   ```
-- This ensures Copilot is enabled and configured for your team, and helps keep your workspace clean.
 
 <!-- Speaker Notes -->
 *Speaker notes:*
@@ -178,12 +203,39 @@ The two-document framework is more than a process—it's a foundation for sustai
 **Example: `.github/copilot-instructions.md`**
 ```markdown
 # GitHub Copilot Instructions for This Repository
-...existing code...
+
+## Architectural and Strategic Guidelines
+
+- You must consult `DECISIONS.md` before proposing or making any architectural or strategic changes.
+- Do not suggest changes that contradict `DECISIONS.md` unless explicitly instructed by a human contributor.
+- `DECISIONS.md` is the authoritative record of architectural decisions and must be treated as such.
+
+## Knowledge Sharing and Documentation
+
+- All significant implementation learnings, optimizations, and failures must be documented in `LEARNINGS.md`.
+- Use `LEARNINGS.md` as a reference to inform suggestions, avoid previously encountered issues, and build upon existing solutions.
+
+## Azure Development Standards
+
+- This project adheres to Microsoft Azure best practices.
+- When generating Azure-related code, terminal commands, or operational procedures, consult the `azure_development-get_best_practices` tool if available.
 ```
 
 **Example: `.vscode/settings.json`**
 ```json
-...existing code...
+{
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "text": "- Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_best_practices` tool if available."
+    },
+    {
+      "text": "- You must always consult `DECISIONS.md` before suggesting or making architectural or strategic changes. Never propose changes that contradict it without explicit human approval."
+    },
+    {
+      "text": "- You must record all significant implementation learnings, optimizations, and failures in `LEARNINGS.md`. Use this file to avoid repeating past mistakes and to build on prior solutions."
+    }
+  ]
+}
 ```
 
 ---
