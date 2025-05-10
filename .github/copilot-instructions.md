@@ -16,3 +16,8 @@
 
 - This project adheres to Microsoft Azure best practices.
 - When generating Azure-related code, terminal commands, or operational procedures, consult the `azure_development-get_best_practices` tool if available.
+
+## Continuous Learning and Documentation
+
+- When you have a major breakthrough, implementation idea, or key lesson (especially when developing or refining tools such as document converters), you must automatically record it in `LEARNINGS.md`.
+- Ensure that all significant insights, optimizations, and failures are captured in `LEARNINGS.md` to support continuous improvement and knowledge sharing.

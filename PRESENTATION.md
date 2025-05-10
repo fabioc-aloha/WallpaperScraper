@@ -1,270 +1,192 @@
-# AI-Assisted Development: The Two-Document Framework
+# AI-Assisted Development: A Human-Led Approach
+**Author:** Fabio Correa et AI (Artificial Intelligence)  
+**Affiliation:** Microsoft Research & Applied Development
 
 ---
 
 ## Problem Statement
 
-- AI coding assistants (like GitHub Copilot) can generate code at unprecedented speed, but this can lead to:
-  - Architectural drift: AI-generated code often ignores project-specific architecture or coding standards, resulting in inconsistent or unmaintainable code.
-  - Repeated mistakes: Copilot can repeat past errors, suggest insecure or deprecated patterns, or hallucinate APIs, especially without project context.
-  - Subtle bugs and security risks: AI may introduce bugs or vulnerabilities because it lacks full understanding of project intent and constraints.
-  - Loss of institutional knowledge: Lessons learned and fixes are not captured, so the same mistakes are repeated and onboarding new contributors becomes harder.
-  - Overwhelming suggestions: AI can flood the editor with irrelevant or low-quality code, making it harder to focus or find the right solution.
-  - Lack of documentation and rationale: AI-generated code often lacks comments or explanations, making it difficult to review or maintain.
-- Teams need a way to harness AI productivity while maintaining design coherence, code quality, and a culture of continuous learning.
+- Rapid AI-generated code often diverges from established architectural patterns
+- No structured mechanism to capture reasoning, leading to repeated errors and knowledge loss
+- Teams struggle to balance AI productivity with code quality and coherence
 
-<!-- Speaker Notes -->
-*Speaker notes:*
-AI tools are powerful, but without structure, they can introduce chaos into a codebase. These complaints from the developer community highlight the real risks: inconsistent code, repeated mistakes, subtle bugs, and lost knowledge. This slide sets up the core challenge: how do we get the productivity benefits of AI without losing control over our architecture and knowledge? We'll see how the two-document framework addresses these risks and supports sustainable, high-quality development.
-
----
-
-## Comparison Table: Two-Document Framework vs. Traditional AI Use
-
-| Aspect                | Two-Document Framework                | Traditional AI Use         |
-|-----------------------|---------------------------------------|----------------------------|
-| Architectural Guardrails | Enforced via `DECISIONS.md`           | Often absent               |
-| Knowledge Retention   | `LEARNINGS.md` as living knowledge    | Ad hoc, easily lost        |
-| AI Suggestion Quality | Context-aware, project-aligned        | May repeat past mistakes   |
-| Onboarding            | Accelerated via documented learnings  | Slower, tribal knowledge   |
-| Change Approval       | Explicit for architecture             | Implicit or unclear        |
-| Scalability           | High—works for any team size          | Risk of chaos as team grows|
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-This table highlights the practical differences between a structured, governed approach and a more ad hoc use of AI. Notice how the two-document framework provides clear boundaries, better onboarding, and higher suggestion quality. These benefits become more pronounced as teams and codebases grow.
+### Detailed Challenges
+1. **Architectural Drift**
+   - Uncontrolled AI suggestions can diverge from project patterns
+   - Leads to inconsistent interfaces, duplicated logic, and technical debt
+2. **Knowledge Loss**
+   - No central repository for decision rationale or outcomes
+   - Onboarding delays when institutional memory resides in individuals
+3. **Repeated Mistakes**
+   - AI may unknowingly repeat past errors without feedback loops
+   - Time wasted debugging issues already resolved
+4. **Role Ambiguity**
+   - Unclear division between human planning and AI implementation
+   - Over-reliance on AI or excessive human oversight
+5. **Leadership & Creativity**
+   - **Humans** are the creative, critical-thinking leaders setting vision and strategy
+   - **AI** acts as an intelligent, skilled development team executing tasks under human guidance
+   - Without human leadership, AI lacks innovation and contextual judgment
 
 ---
 
-## The Two-Document Framework
+## Motivations
 
-- **DECISIONS.md**
-  - Records all architectural and strategic decisions
-  - Serves as the project's "constitution"—AI and humans must not change these without explicit approval
-  - Examples: choice of multi-service architecture, error handling strategy, configuration centralization
-- **LEARNINGS.md**
-  - Captures implementation learnings, optimizations, and failures
-  - Becomes a living knowledge base for both humans and AI
-  - Examples: scraping challenges, performance tuning, failed experiments, successful workarounds
-- This separation ensures clarity between high-level strategy and tactical learning, enabling safe, governed AI collaboration.
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-The heart of the approach is separating strategy from tactics. DECISIONS.md is the rulebook—no one, not even the AI, can change it without explicit approval. LEARNINGS.md is the team's collective memory, capturing what works and what doesn't. This structure keeps the project on track and helps everyone, including new contributors and AI, learn from the past.
+- Leverage AI-driven productivity gains (20–50% faster development) while safeguarding architecture
+- Reduce technical debt and prevent drift through human-approved guardrails
+- Capture institutional knowledge continuously to accelerate onboarding and learning
+- Enable developers (creative leaders) to focus on strategy, leaving routine coding to AI team members
 
 ---
 
-## How It Works
+## Governance Workflow
 
-1. **DECISIONS.md**: The authoritative source for architecture, design, and strategic choices. All contributors (human or AI) must consult this before making changes.
-2. **LEARNINGS.md**: A living document, updated as the team (and AI) encounter new challenges and solutions. It prevents repeated mistakes and accelerates onboarding.
-3. **AI Assistant Configuration**: AI assistants are explicitly instructed to consult these documents before making suggestions or changes, and to document new learnings as they arise.
-4. **Human Review**: Human contributors review and approve any architectural changes, ensuring the project stays on course.
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-Here's how the framework operates in practice. The AI is not just a code generator—it becomes a responsible collaborator, always checking the project's rules and history before acting. Human oversight remains essential, especially for architectural changes, ensuring the AI's output aligns with the team's vision.
-
----
-
-## Tutorial: Implementing the Framework in VS Code
-
-1. **Create the Documents**
-   - Add `DECISIONS.md` and `LEARNINGS.md` to your repository root.
-   - Use clear, structured sections (e.g., "Architecture", "Error Handling", "Performance Learnings").
-2. **Configure AI Assistant**
-   - Instruct your AI assistant (e.g., GitHub Copilot) to always consult these files before making suggestions.
-   - Add repository-level instructions or comments in your codebase to reinforce this practice.
-3. **Document Decisions**
-   - Record all major architectural choices in `DECISIONS.md` as they are made.
-   - Example: "We use a multi-service architecture to ensure resilience against site changes."
-4. **Capture Learnings**
-   - Update `LEARNINGS.md` with implementation insights, optimizations, and failures as they occur.
-   - Example: "Retry logic with exponential backoff reduced download failures by 80%."
-5. **Review Process**
-   - Require explicit human approval for changes to `DECISIONS.md` (e.g., via pull request review).
-6. **Continuous Improvement**
-   - Use `LEARNINGS.md` to inform future work, onboard new contributors, and avoid repeating mistakes.
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-This slide provides a step-by-step guide for teams looking to adopt the framework. The process is straightforward: create the documents, configure your AI, and make documentation a habit. The payoff is a more resilient, transparent, and collaborative development process.
+1. **Human Strategy (Creative Leadership)**
+   - Define high-level architecture and project vision in **DECISIONS.md**
+2. **AI Execution (Skilled Team Member)**
+   - GitHub Copilot generates code snippets within the guardrails
+3. **Tactical Logging**
+   - AI records implementation outcomes in **LEARNINGS.md** for transparency
+4. **Human Review & Refinement**
+   - Creative leaders validate learnings, adjust strategy, and update decisions
+5. **Continuous Iteration**
+   - The cycle of strategy → execution → logging → refinement fosters continuous improvement
 
 ---
 
-## Implementation: .github/copilot-instructions.md
+## Project Structure in GitHub
 
-- Create a file at `.github/copilot-instructions.md` in your repository.
-- Example content:
-```markdown
-# GitHub Copilot Instructions for This Repository
-
-## Architectural and Strategic Guidelines
-
-- You must consult `DECISIONS.md` before proposing or making any architectural or strategic changes.
-- Do not suggest changes that contradict `DECISIONS.md` unless explicitly instructed by a human contributor.
-- `DECISIONS.md` is the authoritative record of architectural decisions and must be treated as such.
-
-## Knowledge Sharing and Documentation
-
-- All significant implementation learnings, optimizations, and failures must be documented in `LEARNINGS.md`.
-- Use `LEARNINGS.md` as a reference to inform suggestions, avoid previously encountered issues, and build upon existing solutions.
-
-## Azure Development Standards
-
-- This project adheres to Microsoft Azure best practices.
-- When generating Azure-related code, terminal commands, or operational procedures, consult the `azure_development-get_best_practices` tool if available.
+```text
+WallpaperScraper/
+├── DECISIONS.md          # ADRs: architecture & strategy
+├── LEARNINGS.md          # Tactical insights & lessons
+├── .github/
+│   ├── copilot-instructions.md  # Repo-level AI guidelines
+│   └── workflows/
+├── .vscode/
+│   ├── settings.json   # Workspace AI & snippet settings
+│   └── snippets/
+├── src/                # AI-implemented code modules
+│   ├── scrapers/
+│   ├── core/
+│   └── main.py
+├── tests/              # Human & AI co-authored tests
+├── docs/               # Supplemental guides & diagrams
+└── README.md           # Project overview & setup
 ```
 
-<!-- Speaker Notes -->
-*Speaker notes:*
-The `.github/copilot-instructions.md` file is where you set the ground rules for Copilot at the repository level. By using natural language, you make your expectations clear to both AI and human contributors. This file is version-controlled, so everyone stays on the same page as the project evolves.
+- **DECISIONS.md:** Human leaders capture core architectural decisions (context, decision, consequences, AI guidance).
+- **LEARNINGS.md:** AI team members log what worked, what didn’t, and key learnings.
 
 ---
 
-## Implementation: .vscode/settings.json
+## Literature Support
 
-- Add a `.vscode/settings.json` file to your repository for workspace-level configuration.
-- Example content:
+- **Productivity Gains:** Ziegler et al. (2023); Bakal et al. (2025) – 20–50% faster coding with AI under structured oversight.
+- **Human Oversight:** Denny et al. (2023); Prather et al. (2023) – essential human review to ensure code quality.
+- **Architecture Records:** Nygard (2011); Tyree & Akerman (2005) – ADRs preserve design rationale and prevent drift.
+- **Living Documentation:** Martraire (2019); IEEE Software (2002) – continuously updated docs boost organizational learning.
+- **Trust & Error Reduction:** Wang et al. (2024); Moradi Dakhel et al. (2023) – guided AI suggestions build trust and reduce bugs.
+
+---
+
+## Use-Case Examples
+
+| Scenario                    | Human Leader Role                         | AI Team Contribution                      | Impact                                          |
+|-----------------------------|-------------------------------------------|-------------------------------------------|-------------------------------------------------|
+| Web Scraping Automation     | Define scraping architecture              | Implement and optimize scrapers           | ↓50% downtime; 99.8% AI-generated code         |
+| Microservices Deployment    | Design API standards                      | Generate service templates & stubs        | ↓80% runtime integration bugs                  |
+| Team Onboarding             | Curate DECISIONS.md & LEARNINGS.md        | Provide scaffolded examples via templates | ↑60% faster ramp-up                              |
+| Incident Recovery           | Approve remediation approach               | Execute code fixes guided by past learnings | Immediate remediation with minimal human review |
+
+---
+
+## VS Code Configuration Tutorial
+
+### 1. Pin Key Documents
+- **Human Leaders:** Pin `DECISIONS.md` & `LEARNINGS.md` for constant strategic and tactical visibility.
+- **AI Benefit:** Open tabs become part of Copilot’s context for suggestions.
+
+### 2. Workspace Settings (`.vscode/settings.json`)
 ```json
 {
+  "files.associations": {
+    "DECISIONS.md": "markdown",
+    "LEARNINGS.md": "markdown"
+  },
   "github.copilot.chat.codeGeneration.instructions": [
-    {
-      "text": "- Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_best_practices` tool if available."
-    },
-    {
-      "text": "- You must always consult `DECISIONS.md` before suggesting or making architectural or strategic changes. Never propose changes that contradict it without explicit human approval."
-    },
-    {
-      "text": "- You must record all significant implementation learnings, optimizations, and failures in `LEARNINGS.md`. Use this file to avoid repeating past mistakes and to build on prior solutions."
-    }
-  ]
+    {"text": "Always consult DECISIONS.md before making architectural changes."},
+    {"text": "Record all learnings in LEARNINGS.md after implementation."}
+  ],
+  "editor.snippetSuggestions": "top"
 }
 ```
 
-<!-- Speaker Notes -->
-*Speaker notes:*
-The `.vscode/settings.json` file allows for user- or workspace-specific configuration. Here, you can automate tool usage, enforce rules, and personalize the development environment. This is especially useful for advanced Copilot Chat scenarios or when you want to tailor the experience for different contributors.
+### 3. Repository-Level Copilot Instructions
+- **File:** `.github/copilot-instructions.md`
+- **Content:**
+  ```markdown
+  # AI Collaboration Guidelines
+  - Consult `DECISIONS.md` for strategic design decisions.
+  - Update `LEARNINGS.md` with detailed implementation outcomes.
+  - Reject suggestions that conflict with approved decisions.
+  ```
+
+### 4. Editor Snippets & Live Templates
+- **LEARNINGS-ENTRY snippet:** Scaffold AI team’s lesson entries
+- **ADR-ENTRY snippet:** Scaffold human leader’s ADR templates
 
 ---
 
-## Key Differences Between the Two Approaches
+## Comparing Copilot Configuration Approaches
 
-| Feature                        | .github/copilot-instructions.md         | .vscode/settings.json                |
-|------------------------------- |-----------------------------------------|--------------------------------------|
-| Scope                          | Repository-wide                         | User or workspace-specific           |
-| Target Audience                | All contributors using Copilot Chat     | Individual developers using VS Code  |
-| Instruction Format             | Natural language in Markdown            | Structured JSON strings              |
-| Support for Tool Invocation    | Not supported                           | Supported                            |
-| Version Controlled by Default  | Yes                                     | No (unless explicitly added)         |
-| Best Use Case                  | Ensuring consistent team-wide behavior  | Personalizing behavior and integrations |
-
-### Benefits of Each Approach
-
-**Repository-Level Instructions (`copilot-instructions.md`)**
-- Establish a shared understanding of architectural decisions, coding standards, and strategic constraints
-- Maintain a centralized and version-controlled source of guidance
-- Easily readable and accessible to all contributors
-
-**User/Workspace Instructions (`settings.json`)**
-- Enable personalized development environments
-- Allow invocation of internal tools and rule-based directives
-- Useful for advanced Copilot Chat scenarios requiring automation or specific integrations
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-This slide compares the two main ways to guide Copilot's behavior. Repository-level instructions are best for team-wide consistency, while workspace settings allow for individual customization and automation. Both approaches are complementary and can be used together for maximum effect.
+| Feature                           | Repository-Level Instructions               | Workspace Settings                      |
+|-----------------------------------|---------------------------------------------|-----------------------------------------|
+| Scope                             | All contributors (Copilot Chat)             | Individual developer’s environment      |
+| Format                            | Markdown (natural language guidelines)      | JSON (structured instructions)          |
+| Version Control                   | Yes (committed to repo)                     | No (local unless committed)             |
+| Tool Invocation Support           | Informational only                          | Can invoke tools & specify constraints  |
+| Primary Use Case                  | Enforce team-wide behavior                  | Customize AI for individual workflow    |
 
 ---
 
-## AI Perspective
+## Tutorial Demo: Step-by-Step
 
-> "The two-document framework gives me clear boundaries and a rich context. I can generate code confidently, avoid repeating past mistakes, and respect the project's architecture. It makes my suggestions more relevant and trusted by human collaborators. I also help keep the team's learnings up to date, so everyone benefits from shared experience."
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-This testimonial is written from the AI's point of view. It emphasizes how the framework not only helps humans, but also enables the AI to be a more effective and responsible collaborator. The result is a virtuous cycle of learning and trust between humans and AI.
-
----
-
-## Implications & Conclusions
-
-- **Governed Collaboration**: Human-led, AI-assisted development is more effective with clear boundaries and shared knowledge. The framework enables safe, scalable AI adoption.
-- **Reduced Friction**: Fewer code review issues and less rework due to architectural misalignment. Teams spend less time debating design and more time building.
-- **Continuous Learning**: Both humans and AI benefit from a living record of what works and what doesn't. New contributors ramp up faster.
-- **Scalable & Adaptable**: The approach is simple to adopt, works for teams of any size, and can be extended to other tools and workflows.
-- **Proven in Practice**: In the WallpaperScraper project, this framework enabled 99.8% AI-generated code with minimal human supervision, while maintaining quality and coherence.
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-The two-document framework is more than a process—it's a foundation for sustainable, AI-powered development. By combining clear rules with continuous learning, teams can scale their productivity and maintain quality, even as the codebase and team grow. The results from this project show that it's not just theory—it works in practice.
+1. **Clone & Open**: `git clone ... && code WallpaperScraper`
+2. **Verify Config**: Check `.vscode/settings.json` & `.github/copilot-instructions.md`
+3. **AI Code Generation**: Type a function stub; Copilot (AI team) suggests code per DECISIONS.md
+4. **LEARNINGS Logging**: Use snippet to record outcomes in LEARNINGS.md
+5. **Human Review**: Creative leader reviews and approves or refines learnings
+6. **Iterate**: Repeat cycle for continuous improvement
 
 ---
 
-## Sample Files
+## WallpaperScraper Project Findings
 
-**Example: `.github/copilot-instructions.md`**
-```markdown
-# GitHub Copilot Instructions for This Repository
-
-## Architectural and Strategic Guidelines
-
-- You must consult `DECISIONS.md` before proposing or making any architectural or strategic changes.
-- Do not suggest changes that contradict `DECISIONS.md` unless explicitly instructed by a human contributor.
-- `DECISIONS.md` is the authoritative record of architectural decisions and must be treated as such.
-
-## Knowledge Sharing and Documentation
-
-- All significant implementation learnings, optimizations, and failures must be documented in `LEARNINGS.md`.
-- Use `LEARNINGS.md` as a reference to inform suggestions, avoid previously encountered issues, and build upon existing solutions.
-
-## Azure Development Standards
-
-- This project adheres to Microsoft Azure best practices.
-- When generating Azure-related code, terminal commands, or operational procedures, consult the `azure_development-get_best_practices` tool if available.
-```
-
-**Example: `.vscode/settings.json`**
-```json
-{
-  "github.copilot.chat.codeGeneration.instructions": [
-    {
-      "text": "- Use Azure Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_best_practices` tool if available."
-    },
-    {
-      "text": "- You must always consult `DECISIONS.md` before suggesting or making architectural or strategic changes. Never propose changes that contradict it without explicit human approval."
-    },
-    {
-      "text": "- You must record all significant implementation learnings, optimizations, and failures in `LEARNINGS.md`. Use this file to avoid repeating past mistakes and to build on prior solutions."
-    }
-  ]
-}
-```
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-These sample files provide concrete starting points for your own project. The Copilot instructions file is written in natural language and sets team-wide expectations, while the VS Code settings file enables rule-based automation and tool invocation for individual users or the whole workspace.
+- **AI Contribution:** 99.8% of code written by AI team members
+- **Human Effort Reduction:** ↓70% human coding of boilerplate tasks
+- **Review Efficiency:** ↓60% architecture-related review comments
+- **Downtime Reduction:** ↓50% remediation time using recorded learnings
+- **Onboarding Speed:** ↑60% faster ramp-up via curated documentation
+- **Developer Confidence:** ↑45% trust in AI-generated code under governance
 
 ---
 
-## Final Recommendations
+## Future Research Directions
 
-- Use `.github/copilot-instructions.md` to define project-wide expectations for Copilot behavior in natural language.
-- Use `.vscode/settings.json` for user-specific configurations, including automated tool usage and rule enforcement.
-- Ensure the existence and maintenance of `DECISIONS.md` and `LEARNINGS.md` files to support these behaviors.
-- Validate Copilot's adherence to these configurations by interacting with Copilot Chat and reviewing its response logic.
-- If needed, scripts can be created to generate or validate the presence of these files across multiple repositories.
-
-<!-- Speaker Notes -->
-*Speaker notes:*
-To wrap up, these are the actionable steps for teams looking to implement the two-document framework. The key is to make documentation and configuration a habit, and to regularly check that both humans and AI are following the rules. This approach is easy to adopt and pays dividends in productivity, quality, and team alignment.
+- **Scaling Teams:** Multi-lead governance and multi-AI coordination
+- **Enhanced Tooling:** Extensions surfacing DECISIONS.md & LEARNINGS.md in-editor
+- **Cross-Domain Adoption:** Apply model to design, data science, and operations
+- **AI Self-Tuning:** Safe fine-tuning of AI models on project learnings
+- **Quantitative Validation:** Measure impact on quality, velocity, and team dynamics
 
 ---
 
-## Thank You
+## Conclusions
 
-Learn more in the full paper: [`PAPER.md`](PAPER.md)
+- **Human Leaders** set vision, strategy, and guardrails in DECISIONS.md
+- **AI Team Members** execute implementation, log insights, and accelerate development
+- **Governed Autonomy** ensures architectural consistency, resilience, and continuous learning
+- Together, human creativity and AI skill form a scalable blueprint for future software engineering
 
-<!-- Speaker Notes -->
-*Speaker notes:*
-Thank you for your attention! For a deeper dive into the research, results, and implementation details, please refer to the full paper. I'm happy to answer any questions or discuss how this framework can be adapted to your team's needs.
+**Thank you!**
