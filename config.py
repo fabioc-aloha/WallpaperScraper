@@ -10,10 +10,24 @@ import os
 default_data_dir = r'C:\Data'
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+AVAILABLE_SERVICES = [
+    'wallpaperswide.com',
+    'wallhaven.cc',
+    'wallpaperbat.com',
+    # Deprecated: 'ultrawidewallpapers.net',
+    # Deprecated: '4kwallpapers.com',
+    # Deprecated: 'wallpapercave.com',
+    # Deprecated: 'wallpapers.com/widescreen'
+]
+
 CONFIG = {    # Wallpaper Settings
     'RESOLUTION': '5120x1440',                     # Desired wallpaper resolution (width x height)
-    'THEMES': ['microsoft', 'ai', 'artificial intelligence'],              # Themes for wallpaper search
-    'SITES': ['wallpaperswide.com', 'wallhaven.cc', 'wallpaperbat.com'], # Wallpaper sites to fetch from
+    'THEMES': ['landscape', 'Dual Monitor', 'city'] ,            # Themes for wallpaper search
+    'SITES': [
+        'wallpaperswide.com',
+        'wallhaven.cc',
+        'wallpaperbat.com'
+    ],
     # Deprecated sites: '4kwallpapers.com' - no longer working with our implementation
 
     # Storage Folders

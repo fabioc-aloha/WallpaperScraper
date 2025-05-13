@@ -8,8 +8,6 @@ import sys
 from PIL import Image  # For checking image dimensions
 
 from config import CONFIG
-# FourKWallpapersService is deprecated as the site structure has changed
-# from services.fourk_wallpapers_service import FourKWallpapersService
 from services.wallpaperswide_service import WallpapersWideService
 from services.wallhaven_service import WallhavenService
 from services.wallpaperbat_service import WallpaperBatService
@@ -217,7 +215,6 @@ def main():
     
     # Service mapping - add new services here
     service_classes = {
-        # "4kwallpapers.com": FourKWallpapersService,  # Site no longer works with our current implementation
         "wallpaperswide.com": WallpapersWideService,
         "wallhaven.cc": WallhavenService,
         "wallpaperbat.com": WallpaperBatService

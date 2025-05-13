@@ -62,6 +62,28 @@
 - Investigate sites with public APIs to reduce dependency on web scraping
 - Implement automatic detection of failed services to gracefully fall back to alternatives
 
+### wallpapercave.com Support (2025-05-12)
+
+**Implementation:**
+- Added `WallpaperCaveService` to support scraping wallpapers from wallpapercave.com.
+- The service searches for each theme, scrapes gallery links, and extracts direct image URLs from gallery pages.
+- Limited to first 5 galleries per theme for efficiency and to avoid excessive requests.
+- Uses robust error handling and logging for failed requests or parsing issues.
+
+**Learnings:**
+- wallpapercave.com organizes wallpapers in galleries (albums), not by direct resolution.
+- Direct image URLs are found in `<img class="wallpaper">` tags within gallery pages.
+- No direct filtering by resolution; filtering is handled post-download as with other services.
+- Some galleries may contain mixed resolutions; rely on post-download resolution checks.
+- Limiting the number of galleries per theme prevents excessive scraping and reduces risk of being blocked.
+
+**What Worked:**
+- Using BeautifulSoup to parse both search and gallery pages.
+- Reusing the same user-agent and timeout strategy as other services.
+
+**What Didn't Work:**
+- Attempting to filter by resolution at the search/gallery level (site does not support this directly).
+
 This document captures key learnings, challenges encountered, and solutions implemented during the development of the Company Logo Scraper project.
 
 ## Issues Encountered and Solutions
@@ -241,6 +263,19 @@ This document captures key learnings, challenges encountered, and solutions impl
 - Consider adding test cases for edge cases (e.g., corrupted images)
 - Add test coverage for aspect ratio evaluation
 - Consider parameterized tests for various resolution scenarios
+
+### Service Deprecation (2025-05-12)
+
+**Deprecated Services:**
+- 4kwallpapers.com: Site structure changed, no longer works with our implementation.
+- wallpapercave.com: Site blocks scraping with HTTP 403, even with advanced browser-mimicking techniques.
+- wallpapers.com/widescreen: No results found or selectors do not match current site structure.
+- ultrawidewallpapers.net: Selectors or navigation unreliable, Selenium-based scraping not robust.
+
+**New Service:**
+- Added support for ultrawidewallpapers.net via UltraWideWallpapersNetService.
+- Fetches thumbnails from the main gallery and extracts direct image URLs from detail pages.
+- Theme filtering not supported yet; currently fetches from the main gallery only.
 
 ## Future Improvements
 
