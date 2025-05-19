@@ -4,6 +4,18 @@
 
 ---
 
+## Abstract
+
+- Introduces a structured two-document framework for effective human–AI collaboration in software development.
+- **DECISIONS.md**: Captures strategic, architectural decisions—must be followed by all contributors and the AI.
+- **LEARNINGS.md**: Records implementation learnings, optimizations, and failures—serves as a living knowledge base.
+- Validated in the **WallpaperScraper** project, where Copilot generated 99.8% of the codebase under human governance.
+- Notably, Copilot spontaneously created debugging and site investigation scripts to troubleshoot service setup issues, highlighting its operational role beyond code generation.
+- Repository-level and workspace-level Copilot instructions enforce adherence to the framework.
+- Results: Reduced architecture-related review feedback, minimized downtime after site changes, improved onboarding, and high developer confidence in AI-generated code.
+
+---
+
 ## Problem Statement
 
 - Rapid AI-generated code often diverges from established architectural patterns
@@ -39,7 +51,7 @@
 
 ---
 
-## Governance Workflow
+## Governance Workflow: The Two-Document Framework
 
 1. **Human Strategy (Creative Leadership)**
    - Define high-level architecture and project vision in **DECISIONS.md**
@@ -58,31 +70,30 @@
 
 ```text
 WallpaperScraper/
-├── DECISIONS.md          # ADRs: architecture & strategy
-├── LEARNINGS.md          # Tactical insights & lessons
+├── DECISIONS.md          # Architectural & strategic decisions
+├── LEARNINGS.md          # Implementation learnings & lessons
 ├── .github/
-│   ├── copilot-instructions.md  # Repo-level AI guidelines
-│   └── workflows/
+│   └── copilot-instructions.md  # Repo-level Copilot rules
 ├── .vscode/
-│   ├── settings.json   # Workspace AI & snippet settings
-│   └── snippets/
-├── src/                # AI-implemented code modules
-│   ├── scrapers/
-│   ├── core/
-│   └── main.py
-├── tests/              # Human & AI co-authored tests
-├── docs/               # Supplemental guides & diagrams
+│   └── settings.json   # Workspace Copilot & snippet settings
+├── services/           # Site-specific service modules
+├── config.py           # Centralized configuration
+├── tests/              # Test suite
+├── debug_site_structure.py
+├── investigate_wallpapers.py
+├── investigate_wallpaperswide.py
 └── README.md           # Project overview & setup
 ```
 
 - **DECISIONS.md:** Human leaders capture core architectural decisions (context, decision, consequences, AI guidance).
-- **LEARNINGS.md:** AI team members log what worked, what didn’t, and key learnings.
+- **LEARNINGS.md:** AI and humans log what worked, what didn’t, and key learnings.
+- **Debugging/Investigation Scripts:** Created spontaneously by Copilot to troubleshoot and adapt to site changes—essential for operational resilience.
 
 ---
 
 ## Literature Support
 
-- **Productivity Gains:** Ziegler et al. (2023); Bakal et al. (2025) – 20–50% faster coding with AI under structured oversight.
+- **Productivity Gains:** Ziegler et al. (2024); Bakal et al. (2025) – 20–50% faster coding with AI under structured oversight.
 - **Human Oversight:** Denny et al. (2023); Prather et al. (2023) – essential human review to ensure code quality.
 - **Architecture Records:** Nygard (2011); Tyree & Akerman (2005) – ADRs preserve design rationale and prevent drift.
 - **Living Documentation:** Martraire (2019); IEEE Software (2002) – continuously updated docs boost organizational learning.
@@ -95,46 +106,18 @@ WallpaperScraper/
 | Scenario                    | Human Leader Role                         | AI Team Contribution                      | Impact                                          |
 |-----------------------------|-------------------------------------------|-------------------------------------------|-------------------------------------------------|
 | Web Scraping Automation     | Define scraping architecture              | Implement and optimize scrapers           | ↓50% downtime; 99.8% AI-generated code         |
-| Microservices Deployment    | Design API standards                      | Generate service templates & stubs        | ↓80% runtime integration bugs                  |
-| Team Onboarding             | Curate DECISIONS.md & LEARNINGS.md        | Provide scaffolded examples via templates | ↑60% faster ramp-up                              |
-| Incident Recovery           | Approve remediation approach               | Execute code fixes guided by past learnings | Immediate remediation with minimal human review |
+| Debugging/Adaptation       | Approve investigation approach            | Spontaneously create debugging scripts    | Rapid troubleshooting, operational resilience   |
+| Team Onboarding             | Curate DECISIONS.md & LEARNINGS.md        | Provide scaffolded examples via templates | ↑60% faster ramp-up                            |
+| Incident Recovery           | Approve remediation approach              | Execute code fixes guided by past learnings | Immediate remediation with minimal human review |
 
 ---
 
-## VS Code Configuration Tutorial
+## VS Code & Copilot Configuration
 
-### 1. Pin Key Documents
-- **Human Leaders:** Pin `DECISIONS.md` & `LEARNINGS.md` for constant strategic and tactical visibility.
-- **AI Benefit:** Open tabs become part of Copilot’s context for suggestions.
-
-### 2. Workspace Settings (`.vscode/settings.json`)
-```json
-{
-  "files.associations": {
-    "DECISIONS.md": "markdown",
-    "LEARNINGS.md": "markdown"
-  },
-  "github.copilot.chat.codeGeneration.instructions": [
-    {"text": "Always consult DECISIONS.md before making architectural changes."},
-    {"text": "Record all learnings in LEARNINGS.md after implementation."}
-  ],
-  "editor.snippetSuggestions": "top"
-}
-```
-
-### 3. Repository-Level Copilot Instructions
-- **File:** `.github/copilot-instructions.md`
-- **Content:**
-  ```markdown
-  # AI Collaboration Guidelines
-  - Consult `DECISIONS.md` for strategic design decisions.
-  - Update `LEARNINGS.md` with detailed implementation outcomes.
-  - Reject suggestions that conflict with approved decisions.
-  ```
-
-### 4. Editor Snippets & Live Templates
-- **LEARNINGS-ENTRY snippet:** Scaffold AI team’s lesson entries
-- **ADR-ENTRY snippet:** Scaffold human leader’s ADR templates
+- **Pin Key Documents:** Keep DECISIONS.md & LEARNINGS.md open for constant reference.
+- **Workspace Settings:** `.vscode/settings.json` enforces Copilot rules and snippet suggestions.
+- **Repository Instructions:** `.github/copilot-instructions.md` encodes project-wide Copilot governance.
+- **Snippets:** Editor templates for quick LEARNINGS.md and ADR entries.
 
 ---
 
@@ -150,20 +133,10 @@ WallpaperScraper/
 
 ---
 
-## Tutorial Demo: Step-by-Step
-
-1. **Clone & Open**: `git clone ... && code WallpaperScraper`
-2. **Verify Config**: Check `.vscode/settings.json` & `.github/copilot-instructions.md`
-3. **AI Code Generation**: Type a function stub; Copilot (AI team) suggests code per DECISIONS.md
-4. **LEARNINGS Logging**: Use snippet to record outcomes in LEARNINGS.md
-5. **Human Review**: Creative leader reviews and approves or refines learnings
-6. **Iterate**: Repeat cycle for continuous improvement
-
----
-
 ## WallpaperScraper Project Findings
 
-- **AI Contribution:** 99.8% of code written by AI team members
+- **AI Contribution:** 99.8% of code written by Copilot under human governance
+- **Debugging Scripts:** Copilot spontaneously created investigation scripts for troubleshooting and adaptation
 - **Human Effort Reduction:** ↓70% human coding of boilerplate tasks
 - **Review Efficiency:** ↓60% architecture-related review comments
 - **Downtime Reduction:** ↓50% remediation time using recorded learnings
@@ -172,21 +145,12 @@ WallpaperScraper/
 
 ---
 
-## Future Research Directions
-
-- **Scaling Teams:** Multi-lead governance and multi-AI coordination
-- **Enhanced Tooling:** Extensions surfacing DECISIONS.md & LEARNINGS.md in-editor
-- **Cross-Domain Adoption:** Apply model to design, data science, and operations
-- **AI Self-Tuning:** Safe fine-tuning of AI models on project learnings
-- **Quantitative Validation:** Measure impact on quality, velocity, and team dynamics
-
----
-
 ## Conclusions
 
 - **Human Leaders** set vision, strategy, and guardrails in DECISIONS.md
 - **AI Team Members** execute implementation, log insights, and accelerate development
 - **Governed Autonomy** ensures architectural consistency, resilience, and continuous learning
+- **Copilot's operational role**: Spontaneous creation of debugging/investigation scripts demonstrates AI's value in troubleshooting and adaptation, not just code generation
 - Together, human creativity and AI skill form a scalable blueprint for future software engineering
 
 **Thank you!**
