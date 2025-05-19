@@ -39,8 +39,6 @@ temp/
 *.log
 *.html
 *.bak
-investigate_*.py
-debug_*.py
 
 # Testing
 .pytest_cache/

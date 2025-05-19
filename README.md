@@ -160,6 +160,43 @@ These documents serve a dual purpose:
 
 `DECISIONS.md` acts as a guardrail, requiring explicit user approval for architectural changes, while `LEARNINGS.md` serves as GitHub Copilot's dynamic knowledge base, continuously updated as it assists with problem-solving.
 
+## Debugging and Site Structure Investigation Scripts
+
+Note: These scripts were created "spontaneously" by Copilot as tools to ensure robust scraping and adaptability to site changes, this project includes dedicated scripts for investigating and debugging the structure of wallpaper sites:
+
+### Why These Scripts Exist
+- **Websites change frequently:** Scraping logic can break if a site updates its HTML structure, class names, or navigation patterns.
+- **Rapid prototyping:** Before implementing a new service or fixing a broken one, it's essential to quickly understand the current structure of the target site.
+- **Selector discovery:** These scripts help identify the best CSS selectors and patterns for reliably extracting wallpaper links and download URLs.
+- **Documentation and reproducibility:** By saving HTML and printing out findings, these scripts document the investigation process, making it easier for future contributors to understand how scraping logic was developed.
+
+### How the Scripts Work
+- **`debug_site_structure.py`:**
+  - Fetches a target page (e.g., a category or search result page).
+  - Prints out the page title, number of images, and tries multiple CSS selectors to find wallpaper thumbnails and detail links.
+  - Examines the first few links and visits a detail page to probe for download links using various selectors.
+  - Outputs findings to the console for rapid iteration.
+
+- **`investigate_wallpaperswide.py`:**
+  - Tries multiple approaches (by resolution, by category, homepage) to fetch and analyze wallpaperswide.com.
+  - Saves HTML responses for offline inspection.
+  - Searches for common elements and wallpaper links using both direct and indirect methods.
+  - Visits detail pages, tries a variety of selectors to find download links, and prints out resolution information.
+  - Documents which selectors and patterns are most effective for the current site structure.
+
+- **`investigate_wallpapers.py`:**
+  - Focuses on 4kwallpapers.com, especially for a given theme (e.g., 'nature').
+  - Fetches a theme/category page, saves the HTML for offline inspection, and analyzes image thumbnails and their parent links to discover detail pages.
+  - Identifies potential wallpaper detail pages by URL patterns and visits them to extract download links, resolution information, and direct image sources.
+  - Prints and saves findings, helping to reverse-engineer the site's navigation and download structure for robust scraper implementation.
+
+### When to Use
+- When adding support for a new wallpaper site.
+- When an existing service breaks due to site changes.
+- When optimizing or refactoring scraping logic.
+
+These scripts are essential for maintaining the scraper's resilience and for onboarding new contributors who need to understand the rationale behind selector choices and scraping strategies.
+
 ## License
 
 The code in this repository is licensed under the MIT License (see `LICENSE`).
