@@ -7,7 +7,7 @@ import re
 import logging
 from urllib.parse import urljoin, quote_plus
 import time
-from config import CONFIG
+from config import CONFIG, DEFAULT_HEADERS
 
 class WallpaperBatService:
     """
@@ -33,20 +33,16 @@ class WallpaperBatService:
         except Exception as e:
             logging.error(f"Failed to parse resolution '{resolution}': {e}")
             self.min_width = self.min_height = 0
-            
-        # Set up headers to avoid being detected as a bot
-        self.headers = {
-            'User-Agent': CONFIG['USER_AGENT'],
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-        }
-        
-    def fetch_wallpapers(self):
+              # Set up headers using centralized configuration
+        self.headers = DEFAULT_HEADERS.copy()
+        self.headers['User-Agent'] = CONFIG['USER_AGENT']
+    def fetch_wallpapers(self, progress_callback=None):
         """
         Fetch wallpaper download URLs by theme and resolution.
         
+        Args:
+            progress_callback: Optional callback function to report progress
+            
         Returns:
             List of wallpaper download URLs matching the requested criteria.
         """
@@ -59,17 +55,32 @@ class WallpaperBatService:
         for theme in self.themes:
             theme_wallpapers = []
             
+            # Progress: Starting theme search
+            if progress_callback:
+                progress_callback()
+            
             # Try theme-specific page with resolution
             theme_search = quote_plus(theme)
             search_url = f"{self.BASE_URL}/search?q={theme_search}"
             
-            # Also try direct resolution URL which may include our theme
+            # Progress: Processing theme search results
+            if progress_callback:
+                progress_callback()
+                
             theme_wallpapers.extend(self._process_search_page(search_url))
             
             # If we're looking for a specific resolution that has its own page, check that too
             if self.resolution == "5120x1440":
+                # Progress: Starting ultrawide search
+                if progress_callback:
+                    progress_callback()
+                    
                 ultrawide_url = f"{self.BASE_URL}/5120x1440-super-ultrawide-wallpapers"
                 ultrawide_wallpapers = self._process_search_page(ultrawide_url)
+                
+                # Progress: Processing ultrawide results
+                if progress_callback:
+                    progress_callback()
                 
                 # If this is a theme search, filter the ultrawide results to only include ones matching the theme
                 if theme.lower() not in ['ultrawide', 'super ultrawide', 'wide', '5120x1440']:
@@ -87,6 +98,10 @@ class WallpaperBatService:
             wallpapers.extend(theme_wallpapers)
             logging.info(f"Found {len(theme_wallpapers)} wallpapers for theme '{theme}' on wallpaperbat.com")
             
+            # Progress: Theme completed
+            if progress_callback:
+                progress_callback()
+            
             # Add delay between theme requests
             time.sleep(CONFIG.get('REQUEST_DELAY', 2.0))
         
@@ -101,12 +116,13 @@ class WallpaperBatService:
         logging.info(f"Found {len(unique_wallpapers)} unique wallpapers from wallpaperbat.com")
         return unique_wallpapers
     
-    def _process_search_page(self, url):
+    def _process_search_page(self, url, progress_callback=None):
         """
         Process a search results page to find wallpaper detail pages.
         
         Args:
             url: The URL of the search results page
+            progress_callback: Optional callback function to report progress
             
         Returns:
             List of wallpaper download URLs
@@ -151,6 +167,10 @@ class WallpaperBatService:
                     # Get download links from the detail page
                     download_urls = self._process_detail_page(detail_url)
                     wallpapers.extend(download_urls)
+                    
+                    # Update progress after each wallpaper
+                    if progress_callback:
+                        progress_callback()
                     
                     # Add a short delay between requests
                     time.sleep(CONFIG.get('REQUEST_DELAY', 2.0))

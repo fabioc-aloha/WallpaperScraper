@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import re
 from urllib.parse import urljoin
 import logging
-from config import CONFIG
+from config import CONFIG, DEFAULT_HEADERS
 import time
 
 class WallpapersWideService:
@@ -31,20 +31,16 @@ class WallpapersWideService:
             self.min_width, self.min_height = map(int, resolution.lower().split('x'))
         except Exception as e:
             logging.error(f"Failed to parse resolution '{resolution}': {e}")
-            self.min_width = self.min_height = 0
+            self.min_width = self.min_height = 0        # Set up headers using centralized configuration
+        self.headers = DEFAULT_HEADERS.copy()
+        self.headers['User-Agent'] = CONFIG['USER_AGENT']
 
-        # More comprehensive browser headers to avoid being detected as a bot
-        self.headers = {
-            'User-Agent': CONFIG['USER_AGENT'],
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-        }
-
-    def fetch_wallpapers(self):
+    def fetch_wallpapers(self, progress_callback=None):
         """
         Fetch wallpaper download URLs by theme and resolution.
+        
+        Args:
+            progress_callback: Optional callback function to report progress
         
         Returns:
             List of wallpaper download URLs matching the requested criteria.
@@ -56,6 +52,10 @@ class WallpapersWideService:
         
         # Process each theme
         for theme in self.themes:
+            # Progress: Starting theme
+            if progress_callback:
+                progress_callback()
+                
             theme_urls = []
             
             # Try theme-specific page first
@@ -71,6 +71,10 @@ class WallpapersWideService:
             
             # Process each URL approach
             for url in theme_urls:
+                # Progress: Trying URL variant
+                if progress_callback:
+                    progress_callback()
+                    
                 logging.info(f"Fetching theme page: {url}")
                 try:
                     theme_wallpapers = self._process_theme_page(url)
@@ -84,6 +88,10 @@ class WallpapersWideService:
                 
                 # Delay to avoid overloading the server
                 time.sleep(CONFIG.get('REQUEST_DELAY', 1))
+            
+            # Progress: Theme completed
+            if progress_callback:
+                progress_callback()
         
         # Remove duplicates while preserving order
         unique_wallpapers = []
@@ -96,74 +104,63 @@ class WallpapersWideService:
         logging.info(f"Found {len(unique_wallpapers)} unique wallpapers from wallpaperswide.com")
         return unique_wallpapers
     
-    def _process_theme_page(self, url):
+    def _process_theme_page(self, url, progress_callback=None):
         """
         Process a theme page to find wallpaper detail pages.
         
         Args:
             url: The URL of the theme page
+            progress_callback: Optional callback function to report progress
             
         Returns:
             List of wallpaper download URLs
         """
         wallpapers = []
-        timeout = CONFIG.get('REQUEST_TIMEOUT', 10)
-        max_retries = CONFIG.get('MAX_RETRIES', 3)
-        retry_delay = CONFIG.get('RETRY_DELAY', 1)
-        
-        # Use retry logic for resilience
-        for attempt in range(max_retries):
-            try:
-                resp = requests.get(url, headers=self.headers, timeout=timeout)
-                resp.raise_for_status()  # Raise exception for 4XX/5XX responses
-                break
-            except (requests.RequestException, IOError) as e:
-                if attempt < max_retries - 1:
-                    wait_time = retry_delay * (2 ** attempt)  # Exponential backoff
-                    logging.warning(f"Attempt {attempt+1} failed for {url}: {e}. Retrying in {wait_time}s")
-                    time.sleep(wait_time)
-                else:
-                    logging.error(f"Failed to fetch {url} after {max_retries} attempts: {e}")
-                    return []
-        
-        # If we get here without a successful response, return empty list
-        if not hasattr(resp, 'text') or resp.status_code != 200:
-            return []
-        
-        soup = BeautifulSoup(resp.text, 'html.parser')
-        wallpaper_links = []
-        
-        # Look for thumbnails with links to detail pages
-        thumbnails = []
-        
-        # First try to find image tags inside links
-        for img in soup.find_all('img'):
-            parent = img.find_parent('a')
-            if parent and parent.has_attr('href') and 'wallpaper' in parent['href']:
-                thumbnails.append(parent['href'])
-        
-        # If that doesn't work, try looking for links with wallpaper in them
-        if not thumbnails:
-            for link in soup.find_all('a', href=True):
-                if 'wallpaper' in link['href'] and not link['href'].startswith('http'):
-                    # Skip category navigation links
-                    if not link['href'].endswith('.html'):
+        try:
+            response = requests.get(url, headers=self.headers)
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                
+                # Try different selectors to find wallpaper containers
+                wallpaper_items = soup.select('div.wallpaper')  # Primary selector
+                if not wallpaper_items:
+                    # Try alternative selectors
+                    wallpaper_items = soup.select('div.item')
+                    if not wallpaper_items:
+                        wallpaper_items = soup.select('a.wallpapers-image')
+                
+                # Process each wallpaper up to the maximum
+                max_items = CONFIG.get('MAX_ITEMS_PER_THEME', 10)
+                for i, item in enumerate(wallpaper_items[:max_items]):
+                    try:
+                        # Get the detail page URL
+                        detail_url = None
+                        link = item.find('a')
+                        if link and link.has_attr('href'):
+                            detail_url = link['href']
+                        
+                        if detail_url:
+                            if not detail_url.startswith(('http://', 'https://')):
+                                detail_url = urljoin(self.BASE_URL, detail_url)
+                            
+                            # Get download links from the detail page
+                            download_urls = self._process_detail_page(detail_url)
+                            wallpapers.extend(download_urls)
+                            
+                            # Update progress after each wallpaper
+                            if progress_callback:
+                                progress_callback()
+                            
+                            # Add delay between requests
+                            time.sleep(CONFIG.get('REQUEST_DELAY', 1))
+                            
+                    except Exception as e:
+                        logging.error(f"Error processing wallpaper item: {e}")
                         continue
-                    thumbnails.append(link['href'])
-        
-        # Limit to first N thumbnails per page to avoid excessive requests
-        max_items = CONFIG.get('MAX_ITEMS_PER_THEME', 10)
-        for link in thumbnails[:max_items]:
-            detail_url = urljoin(self.BASE_URL, link)
-            try:
-                download_links = self._process_detail_page(detail_url)
-                wallpapers.extend(download_links)
-            except Exception as e:
-                logging.error(f"Error processing detail page {detail_url}: {e}")
+                        
+        except Exception as e:
+            logging.error(f"Error processing theme page {url}: {e}")
             
-            # Delay between requests
-            time.sleep(CONFIG.get('REQUEST_DELAY', 1))
-        
         return wallpapers
     
     def _process_detail_page(self, url):

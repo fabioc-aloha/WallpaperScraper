@@ -118,6 +118,40 @@ C:\Data\
 - Time-based estimates (elapsed and remaining) for overall processing
 - Structured error categorization and reporting for analysis
 
+## 6. Progress Tracking Design
+
+### Implementation
+- **Process-Based Progress**: Progress tracking based on well-defined process steps rather than expected item counts
+- **Service-Specific Steps**: Each service defines its own process steps for accurate progress reporting
+- **Theme-Based Calculation**: Total steps calculated by multiplying theme count by service-specific step count
+- **Flexible Progress Updates**: Services report progress at natural process boundaries rather than arbitrary intervals
+
+### Features
+- Accurate progress reporting even when total items are unknown
+- Service-specific progress tracking that matches actual processing steps
+- Support for multiple themes with proper progress aggregation
+- Reliable progress feedback for both parallel and sequential operations
+
+### Process Steps by Service
+1. **wallhaven.cc**: 3 steps per theme
+   - Search request and parsing
+   - Image info collection
+   - Wallpaper download and verification
+
+2. **wallpaperswide.com**: 4 steps per theme
+   - Initial search
+   - Result page processing
+   - Detail page parsing
+   - Wallpaper download and verification
+
+3. **wallpaperbat.com**: Base 3 steps per theme
+   - Search and page processing
+   - Detail page parsing
+   - Wallpaper download and verification
+   Additional +2 steps when searching for ultrawide (5120x1440):
+   - Extended search for ultrawide
+   - Additional page processing
+
 ## 7. Parallel Processing
 
 ### Implementation

@@ -277,6 +277,36 @@ This document captures key learnings, challenges encountered, and solutions impl
 - Fetches thumbnails from the main gallery and extracts direct image URLs from detail pages.
 - Theme filtering not supported yet; currently fetches from the main gallery only.
 
+### Progress Tracking Improvements
+
+**Issue:** Initial implementation of progress tracking relied on expected item counts, which proved unreliable as:
+- Total wallpaper count was often unknown until search completed
+- Some sites required multiple search phases for different resolutions
+- Progress reporting was inconsistent between services with different processing steps
+
+**Solution:**
+1. Switched to process-based progress tracking
+   - Each service defines clear process steps
+   - Progress calculated based on completed steps rather than items
+   - Total steps determined by multiplying themes by service-specific step count
+
+**Benefits:**
+- More accurate and predictable progress reporting
+- Better user experience with consistent progress updates
+- Easier maintenance as process steps map to actual service operations
+- Flexible support for service-specific variations in workflow
+
+**Implementation Insights:**
+1. Process steps should be defined at natural boundaries in the workflow
+2. Step count should reflect actual service complexity
+3. Progress updates should happen immediately after step completion
+4. Progress calculation should account for conditional steps (e.g., extra ultrawide search steps)
+
+**Example Improvements:**
+- wallpaperbat.com service now correctly shows extra progress steps for ultrawide searches
+- wallpaperswide.com progress more accurately reflects its multi-stage download process
+- Progress reporting remains accurate even with unknown total wallpaper counts
+
 ## Future Improvements
 
 Based on our learnings, these areas would benefit from future improvement:

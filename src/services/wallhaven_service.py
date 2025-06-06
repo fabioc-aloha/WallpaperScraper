@@ -7,7 +7,7 @@ import re
 import logging
 from urllib.parse import urljoin, quote_plus
 import time
-from config import CONFIG
+from config import CONFIG, DEFAULT_HEADERS
 
 class WallhavenService:
     """
@@ -33,20 +33,16 @@ class WallhavenService:
         except Exception as e:
             logging.error(f"Failed to parse resolution '{resolution}': {e}")
             self.min_width = self.min_height = 0
-            
-        # Set up headers to avoid being detected as a bot
-        self.headers = {
-            'User-Agent': CONFIG['USER_AGENT'],
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-        }
-        
-    def fetch_wallpapers(self):
+              # Set up headers using centralized configuration
+        self.headers = DEFAULT_HEADERS.copy()
+        self.headers['User-Agent'] = CONFIG['USER_AGENT']
+    def fetch_wallpapers(self, progress_callback=None):
         """
         Fetch wallpaper download URLs by theme and resolution.
         
+        Args:
+            progress_callback: Optional callback function to report progress
+            
         Returns:
             List of wallpaper download URLs matching the requested criteria.
         """
@@ -54,9 +50,21 @@ class WallhavenService:
         
         # Process each theme
         for theme in self.themes:
+            # Progress: Starting theme search
+            if progress_callback:
+                progress_callback()
+                
             theme_wallpapers = self._fetch_theme_wallpapers(theme)
             wallpapers.extend(theme_wallpapers)
             logging.info(f"Found {len(theme_wallpapers)} wallpapers for theme '{theme}'")
+            
+            # Progress: Processing search results
+            if progress_callback:
+                progress_callback()
+            
+            # Progress: Theme completed
+            if progress_callback:
+                progress_callback()
             
             # Add delay between theme requests
             time.sleep(CONFIG.get('REQUEST_DELAY', 2.0))
@@ -72,12 +80,13 @@ class WallhavenService:
         logging.info(f"Found {len(unique_wallpapers)} unique wallpapers from wallhaven.cc")
         return unique_wallpapers
     
-    def _fetch_theme_wallpapers(self, theme):
+    def _fetch_theme_wallpapers(self, theme, progress_callback=None):
         """
         Fetch wallpapers for a specific theme.
         
         Args:
             theme: The theme to search for
+            progress_callback: Optional callback function to report progress
             
         Returns:
             List of wallpaper URLs
@@ -91,7 +100,6 @@ class WallhavenService:
         
         logging.info(f"Searching wallhaven.cc for '{theme}' with resolution {resolutions}: {search_url}")
         
-        # Fetch the search results page
         try:
             response = self._fetch_with_retry(search_url)
             if response is None:
@@ -99,39 +107,41 @@ class WallhavenService:
             
             soup = BeautifulSoup(response.text, 'html.parser')
             
-            # Look for the thumbnail grid
-            thumbnails = soup.select('figure.thumb')
-            logging.debug(f"Found {len(thumbnails)} thumbnail figures")
+            # Look for wallpaper preview images
+            wallpaper_items = soup.select('figure.thumb')
+            logging.debug(f"Found {len(wallpaper_items)} wallpaper items")
             
-            # Process each thumbnail up to the maximum per theme
+            # Process each wallpaper up to the maximum per theme
             max_items = CONFIG.get('MAX_ITEMS_PER_THEME', 10)
-            for i, thumbnail in enumerate(thumbnails):
-                if i >= max_items:
-                    break
-                    
+            for item in wallpaper_items[:max_items]:
                 try:
-                    # Find the link to the wallpaper detail page
-                    link = thumbnail.select_one('a.preview')
+                    # Extract wallpaper info
+                    link = item.select_one('a.preview')
                     if not link or not link.has_attr('href'):
                         continue
                     
-                    # Get the detail page URL
                     detail_url = link['href']
-                    logging.debug(f"Processing wallpaper detail page: {detail_url}")
+                    if not detail_url.startswith(('http://', 'https://')):
+                        detail_url = urljoin(self.BASE_URL, detail_url)
                     
-                    # Get download links from the detail page
+                    # Get the actual wallpaper URLs from the detail page
                     download_urls = self._process_detail_page(detail_url)
                     wallpapers.extend(download_urls)
                     
-                    # Add a short delay between requests
-                    time.sleep(CONFIG.get('REQUEST_DELAY', 2.0))
+                    # Update progress after each wallpaper
+                    if progress_callback:
+                        progress_callback()
                     
                 except Exception as e:
-                    logging.error(f"Error processing thumbnail: {e}")
-            
+                    logging.error(f"Error processing wallpaper item: {e}")
+                    continue
+                    
+                # Add delay between wallpaper requests
+                time.sleep(CONFIG.get('REQUEST_DELAY', 1))
+                
         except Exception as e:
-            logging.error(f"Error fetching search results for '{theme}': {e}")
-        
+            logging.error(f"Error fetching theme {theme}: {e}")
+            
         return wallpapers
     
     def _process_detail_page(self, url):
