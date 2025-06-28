@@ -7,7 +7,7 @@ import re
 import logging
 from urllib.parse import urljoin, quote_plus
 import time
-from config import CONFIG, DEFAULT_HEADERS
+from src.config import CONFIG, DEFAULT_HEADERS
 
 class WallpaperBatService:
     """

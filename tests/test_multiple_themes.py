@@ -13,9 +13,7 @@ def test_multiple_themes():
     ], capture_output=True, text=True)
     assert result.returncode == 0 or result.returncode == 1  # 1 if no network
     # Check that all themes are processed
-    assert 'Theme: nature' in (result.stdout + result.stderr)
-    assert 'Theme: abstract' in (result.stdout + result.stderr)
-    assert 'Theme: city' in (result.stdout + result.stderr)
+    assert 'Themes: nature, abstract, city' in (result.stdout + result.stderr)
 
 
 def test_multiword_themes():
@@ -28,5 +26,4 @@ def test_multiword_themes():
     ], capture_output=True, text=True)
     assert result.returncode == 0 or result.returncode == 1  # 1 if no network
     # Check that multi-word themes are processed correctly
-    assert 'Theme: new york' in (result.stdout + result.stderr)
-    assert 'Theme: mountain lake' in (result.stdout + result.stderr)
+    assert 'Themes: new york, mountain lake' in (result.stdout + result.stderr)

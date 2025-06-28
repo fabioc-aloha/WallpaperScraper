@@ -1,5 +1,13 @@
 # AI-Assisted Development: A Human-Led Approach
-**Author:** Fabio Correa et AI (Artificial Intelligence)  
+**Author:** Fabio Correa et AI├── config.py           # Centralized configuration
+├── tests/              # Test suite
+├── investigate_wallpaperswide.py  # Active site investigation
+└── README.md           # Project overview & setup
+```
+
+- **DECISIONS.md:** Human leaders capture core architectural decisions (context, decision, consequences, AI guidance).
+- **LEARNINGS.md:** AI and humans log what worked, what didn't, and key learnings.
+- **Investigation Scripts:** Created spontaneously by Copilot to troubleshoot and adapt to site changes—essential for operational resilience. (v1.0.1: deprecated scripts removed for code maintenance)l Intelligence)  
 **Affiliation:** Microsoft Research & Applied Development
 
 ---

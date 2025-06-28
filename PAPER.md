@@ -74,11 +74,11 @@ All configuration is centralized in `config.py`, including:
 ### Debugging and Site Structure Investigation Scripts
 
 Several debugging and site investigation scripts were created spontaneously by Copilot to troubleshoot issues encountered during service setup and adaptation to changing website structures. These scripts were not part of the original design, but emerged as practical tools to ensure robust scraping and rapid response to site changes:
-- `debug_site_structure.py`: Probes a target page, prints out findings, and tries multiple selectors to discover wallpaper links and download URLs.
 - `investigate_wallpaperswide.py`: Analyzes wallpaperswide.com using multiple approaches (by resolution, category, homepage), saves HTML for inspection, and documents effective selectors.
-- `investigate_wallpapers.py`: Focuses on 4kwallpapers.com (now deprecated), reverse-engineering navigation and download structure for robust scraper implementation.
 
-These scripts are essential for adapting to site changes, onboarding new contributors, and documenting the rationale behind scraping strategies. Their spontaneous creation by Copilot highlights the AI's role not only in implementation, but also in problem-solving and operational resilience during the development process.
+**Note**: As of version 1.0.1, scripts targeting deprecated sites (4kwallpapers.com) have been removed as part of the project's code cleanup and maintenance efforts, keeping the codebase focused on functional services.
+
+These remaining scripts are essential for adapting to site changes, onboarding new contributors, and documenting the rationale behind scraping strategies. Their spontaneous creation by Copilot highlights the AI's role not only in implementation, but also in problem-solving and operational resilience during the development process.
 
 ## The Two-Document Framework: DECISIONS.md and LEARNINGS.md
 
@@ -137,7 +137,7 @@ Each wallpaper site is implemented as a separate service module, following a com
 
 ### Example: Debugging and Investigation Scripts
 
-Scripts such as `debug_site_structure.py`, `investigate_wallpaperswide.py`, and `investigate_wallpapers.py` are used to analyze site structure, discover selectors, and document findings. These scripts are essential for maintaining resilience against site changes and for onboarding new contributors.
+Scripts such as `investigate_wallpaperswide.py` are used to analyze site structure, discover selectors, and document findings. These scripts are essential for maintaining resilience against site changes and for onboarding new contributors. As of v1.0.1, the project maintains a focused set of investigation tools, with deprecated scripts removed to keep the codebase clean and maintainable.
 
 ## Observed Benefits
 

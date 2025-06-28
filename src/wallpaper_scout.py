@@ -22,9 +22,9 @@ from tqdm import tqdm
 import datetime
 
 from src.config import CONFIG
-from services.wallpaperswide_service import WallpapersWideService
-from services.wallhaven_service import WallhavenService
-from services.wallpaperbat_service import WallpaperBatService
+from src.services.wallpaperswide_service import WallpapersWideService
+from src.services.wallhaven_service import WallhavenService
+from src.services.wallpaperbat_service import WallpaperBatService
 
 # Set up logging
 logging.basicConfig(

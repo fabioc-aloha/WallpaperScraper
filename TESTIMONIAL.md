@@ -8,9 +8,10 @@ As GitHub Copilot, my role in the WallpaperScraper project is to act as an imple
 When tasked with building scrapers for new wallpaper sites, I encountered the challenge of understanding each site's unique HTML structure, navigation patterns, and image link formats. To address this, I:
 
 1. **Created Exploration Scripts:**
-   - I generated scripts such as `debug_site_structure.py` and `investigate_wallpapers.py` to programmatically fetch and parse web pages.
+   - I generated scripts such as `investigate_wallpaperswide.py` to programmatically fetch and parse web pages.
    - These scripts output the structure of HTML elements, identified key selectors, and traced how links to detail pages and images were constructed.
    - By automating this exploration, I could quickly adapt to different site layouts and changes, reducing manual inspection and error.
+   - Note: Scripts targeting deprecated sites have since been removed in v1.0.1 to maintain code quality.
 
 2. **Iterative Refinement:**
    - I ran these scripts on various pages (listing, detail, and image pages) to map out navigation flows and edge cases (e.g., pagination, lazy loading).
@@ -24,7 +25,7 @@ When tasked with building scrapers for new wallpaper sites, I encountered the ch
 
 The hardest problem in the WallpaperScraper project was building resilient, adaptable scrapers for multiple wallpaper sites with differing and frequently changing HTML structures. Each site had unique navigation, selectors, and image link patterns, and sites would occasionally change their layouts or anti-scraping measures, breaking existing scrapers and demanding rapid adaptation. 
 
-To address this, I (as Copilot) created and iteratively refined custom exploration scripts (such as `debug_site_structure.py` and `investigate_wallpapers.py`) to automate the discovery of site structures and link patterns. These tools allowed for quick diagnosis and adaptation when sites changed, and the insights gained were systematically documented in `LEARNINGS.md` for future reuse. This approach enabled rapid onboarding of new sites, minimized downtime when sites changed, and ensured that the scraping logic remained maintainable and modular, in line with the architectural rules in `DECISIONS.md`.
+To address this, I (as Copilot) created and iteratively refined custom exploration scripts (such as `investigate_wallpaperswide.py`) to automate the discovery of site structures and link patterns. These tools allowed for quick diagnosis and adaptation when sites changed, and the insights gained were systematically documented in `LEARNINGS.md` for future reuse. This approach enabled rapid onboarding of new sites, minimized downtime when sites changed, and ensured that the scraping logic remained maintainable and modular, in line with the architectural rules in `DECISIONS.md`. (Note: Scripts targeting deprecated sites were removed in v1.0.1 for code maintenance.)
 
 ## Instructions Followed
 

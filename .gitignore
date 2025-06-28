@@ -1,7 +1,15 @@
-# Python
+# WallpaperScraper .gitignore
+# Comprehensive ignore patterns for Python project with wallpaper scraping functionality
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -18,27 +26,28 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Virtual Environment
+# Virtual environments
 .env
 .venv
 env/
 venv/
 ENV/
+env.bak/
+venv.bak/
 
-# IDE
+# IDE and editors
 .idea/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
 *.swp
 *.swo
+*~
 .project
 .pydevproject
 .settings/
-
-# Project specific
-temp/
-*.log
-*.html
-*.bak
 
 # Testing
 .pytest_cache/
@@ -46,7 +55,37 @@ temp/
 coverage.xml
 *.cover
 .hypothesis/
+.tox/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Project specific - temporary files and logs
+temp/
+*.log
+*.html
+*.bak
+
+# Project specific - downloaded wallpapers (if stored locally)
+wallpapers/
+downloads/
+
+# Project specific - Azure deployment (if used)
+.azure/
+
+# Backup files
+*.orig
+*.backup
 
 # Operating System
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
+
+# Windows
+$RECYCLE.BIN/

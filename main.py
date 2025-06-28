@@ -10,7 +10,7 @@ def main():
     parser.add_argument(
         '--version',
         action='version',
-        version='WallpaperScraper 1.0.0')
+        version='WallpaperScraper 1.0.1')
     parser.add_argument(
         '--config',
         type=str,

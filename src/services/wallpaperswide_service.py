@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import re
 from urllib.parse import urljoin
 import logging
-from config import CONFIG, DEFAULT_HEADERS
+from src.config import CONFIG, DEFAULT_HEADERS
 import time
 
 class WallpapersWideService:

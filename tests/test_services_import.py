@@ -6,10 +6,10 @@ SRC_PATH = os.path.join(ROOT_PATH, 'src')
 for path in [ROOT_PATH, SRC_PATH]:
     if path not in sys.path:
         sys.path.insert(0, path)
-from services import wallhaven_service
-from services import wallpaperbat_service
-from services import wallpaperswide_service
-import config
+from src.services import wallhaven_service
+from src.services import wallpaperbat_service
+from src.services import wallpaperswide_service
+from src import config
 
 
 def test_services_use_default_headers():

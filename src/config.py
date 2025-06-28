@@ -24,7 +24,7 @@ AVAILABLE_SERVICES = [
 
 CONFIG = {
     # Wallpaper Settings
-    'VERSION': '1.0.0',  # Project version
+    'VERSION': '1.0.1',  # Project version
     'RESOLUTION': '5120x1440',  # Desired wallpaper resolution (width x height)
     'SITES': [
         'wallpaperswide.com',

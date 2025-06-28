@@ -1,5 +1,11 @@
-requests
-beautifulsoup4
-pytest
-markdown
-autopep8
+# Core dependencies for wallpaper scraping
+requests>=2.31.0          # HTTP requests for downloading wallpapers and scraping sites
+beautifulsoup4>=4.12.0     # HTML parsing for extracting wallpaper links
+Pillow>=10.0.0             # Image processing for resolution verification
+tqdm>=4.65.0               # Progress bars for download and scraping progress
+
+# Site investigation and reporting
+markdown>=3.4.0            # Generate SITES.md reports from wallpaper_scout.py
+
+# Development and testing
+pytest>=7.4.0              # Testing framework

@@ -8,8 +8,6 @@ if SRC_PATH not in sys.path:
     sys.path.insert(0, SRC_PATH)
 
 debug_scripts = [
-    'debug_site_structure',
-    'investigate_wallpapers',
     'investigate_wallpaperswide',
 ]
 

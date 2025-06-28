@@ -19,21 +19,23 @@ Read the full paper here: [`PAPER.md`](PAPER.md)
 - **Service modules for each wallpaper site are now under `src/services/`.**
 - **Configuration is centralized in `src/config.py`.**
 - **Debugging and investigation scripts are in `src/` for easy access.**
+- **Dead code removed**: Cleaned up deprecated investigation scripts and duplicate files in v1.0.1.
 
-### New Layout
+### Current Layout
 
 ```
 WallpaperScraper/
 │   main.py                # CLI entry point (run this to start)
 │   README.md              # Project documentation
+│   CHANGELOG.md           # Version history and changes
+│   requirements.txt       # Dependencies with version constraints
 │   ...                    # Other docs and licenses
 └───src/
     │   config.py          # Central configuration
     │   wallpaper_scraper.py, wallpaper_scout.py
-    │   debug_site_structure.py, investigate_wallpapers.py, investigate_wallpaperswide.py
+    │   investigate_wallpaperswide.py
     └───services/
         │   wallhaven_service.py, wallpaperbat_service.py, wallpaperswide_service.py
-        │   ...
 ```
 
 **To run the scraper, just use:**
@@ -79,6 +81,8 @@ python -m venv .venv
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+**Note**: As of v1.0.1, `requirements.txt` includes proper version constraints and is organized by dependency purpose for better maintainability.
 
 ## Performance and Parallelism
 
@@ -225,7 +229,7 @@ These documents serve a dual purpose:
 
 ## Debugging and Site Structure Investigation Scripts
 
-Note: These scripts were created "spontaneously" by Copilot as tools to ensure robust scraping and adaptability to site changes, this project includes dedicated scripts for investigating and debugging the structure of wallpaper sites:
+The project includes a dedicated script for investigating and debugging the structure of wallpaper sites. **Note**: As of v1.0.1, deprecated scripts targeting the non-functional 4kwallpapers.com site have been removed to keep the codebase clean and focused.
 
 ### Why These Scripts Exist
 - **Websites change frequently:** Scraping logic can break if a site updates its HTML structure, class names, or navigation patterns.
@@ -233,12 +237,7 @@ Note: These scripts were created "spontaneously" by Copilot as tools to ensure r
 - **Selector discovery:** These scripts help identify the best CSS selectors and patterns for reliably extracting wallpaper links and download URLs.
 - **Documentation and reproducibility:** By saving HTML and printing out findings, these scripts document the investigation process, making it easier for future contributors to understand how scraping logic was developed.
 
-### How the Scripts Work
-- **`debug_site_structure.py`:**
-  - Fetches a target page (e.g., a category or search result page).
-  - Prints out the page title, number of images, and tries multiple CSS selectors to find wallpaper thumbnails and detail links.
-  - Examines the first few links and visits a detail page to probe for download links using various selectors.
-  - Outputs findings to the console for rapid iteration.
+### Available Investigation Script
 
 - **`investigate_wallpaperswide.py`:**
   - Tries multiple approaches (by resolution, by category, homepage) to fetch and analyze wallpaperswide.com.
@@ -247,18 +246,26 @@ Note: These scripts were created "spontaneously" by Copilot as tools to ensure r
   - Visits detail pages, tries a variety of selectors to find download links, and prints out resolution information.
   - Documents which selectors and patterns are most effective for the current site structure.
 
-- **`investigate_wallpapers.py`:**
-  - Focuses on 4kwallpapers.com, especially for a given theme (e.g., 'nature').
-  - Fetches a theme/category page, saves the HTML for offline inspection, and analyzes image thumbnails and their parent links to discover detail pages.
-  - Identifies potential wallpaper detail pages by URL patterns and visits them to extract download links, resolution information, and direct image sources.
-  - Prints and saves findings, helping to reverse-engineer the site's navigation and download structure for robust scraper implementation.
-
 ### When to Use
 - When adding support for a new wallpaper site.
 - When an existing service breaks due to site changes.
 - When optimizing or refactoring scraping logic.
+- When investigating new potential wallpaper sources.
+
+### Creating New Investigation Scripts
+When adding support for new sites, follow the pattern established by `investigate_wallpaperswide.py`:
+1. Fetch target pages and save HTML for offline analysis
+2. Try multiple selector strategies
+3. Document findings and effective patterns
+4. Test resolution extraction and link discovery
 
 These scripts are essential for maintaining the scraper's resilience and for onboarding new contributors who need to understand the rationale behind selector choices and scraping strategies.
+
+## Version History
+
+For detailed information about changes, improvements, and bug fixes in each version, see [`CHANGELOG.md`](CHANGELOG.md).
+
+**Current Version**: 1.0.1 - Includes major cleanup, dead code removal, and improved documentation.
 
 ## License
 
