@@ -32,7 +32,7 @@ class TestEnhancedCLI:
             capture_output=True, text=True
         )
         assert result.returncode == 0
-        assert "1.0.2" in result.stdout
+        assert "1.1.0" in result.stdout
     
     def test_cli_scout_option(self):
         """Test that scout option is available."""

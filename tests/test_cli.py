@@ -17,7 +17,7 @@ def test_cli_version():
     result = subprocess.run(
         [sys.executable, CLI_PATH, '--version'], capture_output=True, text=True)
     assert result.returncode == 0
-    assert "WallpaperScraper 1.0" in result.stdout
+    assert "WallpaperScraper 1.1.0" in result.stdout
 
 
 def test_cli_theme_overrides_config():
