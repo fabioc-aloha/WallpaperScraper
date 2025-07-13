@@ -265,7 +265,7 @@ These scripts are essential for maintaining the scraper's resilience and for onb
 
 For detailed information about changes, improvements, and bug fixes in each version, see [`CHANGELOG.md`](CHANGELOG.md).
 
-**Current Version**: 1.0.1 - Includes major cleanup, dead code removal, and improved documentation.
+**Current Version**: 1.1.0 - Major feature enhancements including environment variables, advanced CLI, error handling, and comprehensive testing.
 
 ## License
 

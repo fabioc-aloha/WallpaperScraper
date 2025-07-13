@@ -216,52 +216,83 @@ def download_image(
     return False
 
 
-def main(log_level=None, themes=None, resolution=None):
+def main(
+    themes: list[str],
+    resolution: str = None,
+    sites: list[str] = None,
+    max_downloads: int = None,
+    output_dir: str = None,
+    workers: int = None,
+    timeout: int = None,
+    dry_run: bool = False,
+    **kwargs
+):
     """
     Main function to orchestrate wallpaper scraping and downloading.
-    Accepts log_level, themes, and resolution from CLI, with fallback to config.py.
+    Enhanced with comprehensive options and dry-run capability.
+    
+    Args:
+        themes: List of themes to search for
+        resolution: Target resolution (e.g., '5120x1440')
+        sites: List of specific sites to scrape (defaults to all enabled)
+        max_downloads: Maximum downloads per theme
+        output_dir: Custom output directory
+        workers: Number of parallel workers
+        timeout: Request timeout in seconds
+        dry_run: If True, show what would be downloaded without downloading
     """
-    # Fallbacks for CLI options
-    if not log_level:
-        log_level = CONFIG.get("LOG_LEVEL", "INFO")
+    # Import enhanced utilities
+    from src.utils import validate_resolution, safe_filename, log_execution_time
+    
+    # Validate and set defaults from config
     if not resolution:
         resolution = CONFIG.get("RESOLUTION", "5120x1440")
-    if not themes or not isinstance(themes, list) or not themes:
-        logging.error("No themes provided. Please specify at least one theme via CLI.")
+    if not sites:
+        sites = CONFIG.get("SITES", [])
+    if not max_downloads:
+        max_downloads = CONFIG.get("MAX_ITEMS_PER_THEME", 10)
+    if not workers:
+        workers = CONFIG.get("MAX_WORKERS", 4)
+    if not timeout:
+        timeout = CONFIG.get("REQUEST_TIMEOUT", 30)
+    
+    # Validate resolution format
+    try:
+        min_width, min_height = validate_resolution(resolution)
+    except Exception as e:
+        logging.error(f"Invalid resolution: {e}")
         return
-
-    # Configure logging to console and file
-    numeric_level = getattr(logging, log_level.upper(), logging.INFO)
-    log_format = "%(asctime)s - %(levelname)s - %(message)s"
-    temp_folder = CONFIG.get("TEMP_FOLDER", os.path.join(os.path.dirname(os.path.dirname(__file__)), "temp"))
-    os.makedirs(temp_folder, exist_ok=True)
-    log_file_path = os.path.join(temp_folder, "wallpaper_scraper.log")
-    logging.basicConfig(
-        level=numeric_level,
-        format=log_format,
-        handlers=[
-            logging.StreamHandler(sys.stdout),
-            logging.FileHandler(log_file_path)
-        ]
-    )
+    
+    # Validate themes
+    if not themes or not isinstance(themes, list):
+        logging.error("No themes provided. Please specify at least one theme.")
+        return
 
     logging.info(f"Starting wallpaper scraper with resolution {resolution}")
     logging.info(f"Themes: {', '.join(themes)}")
-    logging.info(f"Sites: {', '.join(CONFIG['SITES'])}")
+    logging.info(f"Sites: {', '.join(sites)}")
+    logging.info(f"Max downloads per theme: {max_downloads}")
+    if dry_run:
+        logging.info("DRY RUN MODE: No files will be downloaded")
 
     # Prepare folders
-    output_folder = CONFIG["OUTPUT_FOLDER"]
-    os.makedirs(output_folder, exist_ok=True)
+    if output_dir:
+        output_folder = output_dir
+    else:
+        output_folder = CONFIG["OUTPUT_FOLDER"]
+    
+    if not dry_run:
+        os.makedirs(output_folder, exist_ok=True)
+        logging.info(f"Output directory: {output_folder}")
 
-    if "TEMP_FOLDER" in CONFIG:
-        os.makedirs(CONFIG["TEMP_FOLDER"], exist_ok=True)
+    temp_folder = CONFIG.get("TEMP_FOLDER", os.path.join(os.path.dirname(os.path.dirname(__file__)), "temp"))
+    if not dry_run:
+        os.makedirs(temp_folder, exist_ok=True)
 
     # Prepare download settings
-    timeout = CONFIG["REQUEST_TIMEOUT"]
     retries = CONFIG["MAX_RETRIES"]
     delay = CONFIG["RETRY_DELAY"]
     headers = {"User-Agent": CONFIG["USER_AGENT"]}
-    max_workers = CONFIG["MAX_WORKERS"]
 
     # Service mapping - add new services here
     service_classes = {
@@ -270,6 +301,15 @@ def main(log_level=None, themes=None, resolution=None):
         "wallpaperbat.com": WallpaperBatService
     }
 
+    # Filter sites to only those that are available and requested
+    available_sites = [site for site in sites if site in service_classes]
+    if not available_sites:
+        logging.error(f"No valid sites found in: {sites}")
+        logging.info(f"Available sites: {list(service_classes.keys())}")
+        return
+    
+    logging.info(f"Scraping from {len(available_sites)} sites: {', '.join(available_sites)}")
+
     # Collect wallpaper URLs from all configured services in parallel, with progress bars
     all_urls = []
     scrape_futures = []
@@ -277,7 +317,7 @@ def main(log_level=None, themes=None, resolution=None):
     scrape_bars = {}
     
     # Prepare progress bars for each site
-    for site in CONFIG["SITES"]:
+    for site in available_sites:
         if site in service_classes:
             # Calculate total steps for each site based on their process:
             if site == 'wallpaperbat.com':
@@ -316,8 +356,8 @@ def main(log_level=None, themes=None, resolution=None):
         def progress_cb():
             scrape_bars[site].update(1)
         return progress_cb
-    with ThreadPoolExecutor(max_workers=max_workers) as scrape_executor:
-        for site in CONFIG["SITES"]:
+    with ThreadPoolExecutor(max_workers=workers) as scrape_executor:
+        for site in available_sites:
             if site in service_classes:
                 logging.info(f"Submitting scrape for site: {site}")
                 service_class = service_classes[site]
@@ -352,12 +392,27 @@ def main(log_level=None, themes=None, resolution=None):
             seen.add(url)
             unique_urls.append(url)
 
-    logging.info(f"Found {len(unique_urls)} unique wallpapers to download")
+    logging.info(f"Found {len(all_urls)} total wallpapers, {len(unique_urls)} unique")
+    
+    # Limit URLs per theme if max_downloads is specified
+    if max_downloads and len(unique_urls) > max_downloads * len(themes):
+        limited_urls = unique_urls[:max_downloads * len(themes)]
+        logging.info(f"Limiting to {len(limited_urls)} wallpapers ({max_downloads} per theme)")
+        unique_urls = limited_urls
 
     # Skip download if no wallpapers found
     if not unique_urls:
         logging.warning(
             "No wallpapers found. Check your configuration or network connection.")
+        return
+
+    # Dry run mode: just show what would be downloaded
+    if dry_run:
+        logging.info(f"DRY RUN: Would download {len(unique_urls)} wallpapers:")
+        for i, url in enumerate(unique_urls[:10], 1):  # Show first 10
+            logging.info(f"  {i}. {url}")
+        if len(unique_urls) > 10:
+            logging.info(f"  ... and {len(unique_urls) - 10} more")
         return
 
     # Parse the desired resolution
@@ -408,9 +463,9 @@ def main(log_level=None, themes=None, resolution=None):
 
     # Download images using thread pool for parallelism
     logging.info(
-        f"Downloading {len(urls_to_download)} new wallpapers with {max_workers} parallel workers")
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        f"Downloading {len(urls_to_download)} new wallpapers with {workers} parallel workers")
+    
+    with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = []
         for url in urls_to_download:
             futures.append(

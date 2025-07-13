@@ -9,7 +9,7 @@ def test_cli_help():
     result = subprocess.run(
         [sys.executable, CLI_PATH, '--help'], capture_output=True, text=True)
     assert result.returncode == 0
-    assert "Wallpaper Scraper CLI" in result.stdout
+    assert "WallpaperScraper" in result.stdout  # Updated to match new description
     assert "--scrape" in result.stdout
 
 

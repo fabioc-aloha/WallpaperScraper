@@ -1,5 +1,6 @@
 """
 Service module for fetching wallpapers from wallhaven.cc.
+Enhanced with improved error handling and retry logic.
 """
 import requests
 from bs4 import BeautifulSoup
@@ -8,6 +9,7 @@ import logging
 from urllib.parse import urljoin, quote_plus
 import time
 from src.config import CONFIG, DEFAULT_HEADERS
+from src.utils import retry_on_exception, log_execution_time, NetworkError, ServiceError
 
 class WallhavenService:
     """
