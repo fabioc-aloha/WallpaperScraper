@@ -7,7 +7,7 @@ Supports environment variable overrides via .env file.
 """
 
 import os
-from typing import List, Dict, Any, Optional
+from typing import List, Any, Optional
 from dotenv import load_dotenv
 import logging
 

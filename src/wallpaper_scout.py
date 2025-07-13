@@ -16,7 +16,6 @@ from bs4 import BeautifulSoup
 import logging
 import time
 from urllib.parse import urljoin
-import markdown
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 import datetime

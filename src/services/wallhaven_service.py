@@ -9,7 +9,6 @@ import logging
 from urllib.parse import urljoin, quote_plus
 import time
 from src.config import CONFIG, DEFAULT_HEADERS
-from src.utils import retry_on_exception, log_execution_time, NetworkError, ServiceError
 
 class WallhavenService:
     """

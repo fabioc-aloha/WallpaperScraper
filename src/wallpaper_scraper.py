@@ -9,7 +9,6 @@ import sys, os
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 from tqdm import tqdm
@@ -242,7 +241,7 @@ def main(
         dry_run: If True, show what would be downloaded without downloading
     """
     # Import enhanced utilities
-    from src.utils import validate_resolution, safe_filename, log_execution_time
+    from src.utils import validate_resolution
     
     # Validate and set defaults from config
     if not resolution:
@@ -500,14 +499,3 @@ def main(
         f"Downloaded {successes}/{len(urls_to_download)} new images ({success_rate:.1f}%)")
     logging.info(
         f"Total: {total_downloaded}/{total_wallpapers} images ({overall_success_rate:.1f}%) available in {output_folder}")
-
-
-if __name__ == "__main__":
-    import sys
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--theme', type=str, required=True, help='Theme for wallpaper search (comma-separated for multiple)')
-    parser.add_argument('--log-level', type=str, default=None)
-    args = parser.parse_args()
-    themes = [t.strip() for t in args.theme.split(',') if t.strip()]
-    main(log_level=args.log_level, themes=themes)

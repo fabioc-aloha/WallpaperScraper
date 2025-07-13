@@ -8,7 +8,6 @@ import time
 from bs4 import BeautifulSoup
 import re
 from urllib.parse import urljoin
-import os
 import logging
 from src.config import CONFIG
 
